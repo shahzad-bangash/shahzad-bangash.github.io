@@ -1,7 +1,146 @@
 <!DOCTYPE html>
-<html>
-  <body>
-    <h1>Hello World</h1>
-    <p>I'm hosted with GitHub Pages.</p>
-  </body>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Personal Blog</title>
+    <!-- Bootstrap CSS CDN -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/5.3.3/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            background-color: #f5f5f5;
+            color: #333;
+            font-family: 'Roboto', sans-serif;
+            margin: 0;
+        }
+        header {
+            background-color: #6200ea;
+            color: #ffffff;
+            padding: 2rem 0;
+            text-align: center;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        header h1 {
+            margin: 0;
+            font-size: 2.5rem;
+            font-weight: 500;
+        }
+        .profile-container {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+        .profile img {
+            border-radius: 50%;
+            width: 100%;
+            max-width: 290px;
+            height: auto;
+            object-fit: cover;
+            border: 4px solid #ffffff;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+        .profile-text {
+            flex: 1;
+        }
+        .profile-text h2 {
+            margin: 0;
+            font-size: 2rem;
+            font-weight: 500;
+        }
+        .profile-text p {
+            margin: 0.5rem 0 0;
+        }
+        .intro, .blog-posts {
+            background: #ffffff;
+            border-radius: 8px;
+            padding: 2rem;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            margin-bottom: 2rem;
+        }
+        .intro h2, .blog-posts h2 {
+            font-size: 2rem;
+            margin-bottom: 1rem;
+            font-weight: 400;
+        }
+        .post h3 {
+            font-size: 1.5rem;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+        }
+        .btn-primary {
+            background-color: #007bff;
+            border-color: #0056b3;
+            transition: background-color 0.3s, border-color 0.3s;
+            font-weight: 500;
+        }
+        .btn-primary:hover {
+            background-color: #3700b3;
+            border-color: #3700b3;
+        }
+        footer {
+            background: #6200ea;
+            color: #ffffff;
+            text-align: center;
+            padding: 1rem 0;
+            position: relative;
+            width: 100%;
+            box-shadow: 0 -4px 6px rgba(0, 0, 0, 0.1);
+        }
+        @media (max-width: 576px) {
+            .profile img {
+                max-width: 120px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Home</h1>
+    </header>
+
+    <div class="container mt-4">
+        <div class="profile-container mb-4">
+            <div class="profile">
+                <img src="C:\Users\SHAHZAD BANGASH\Pictures\P_Pic.jpg" alt="Profile Picture">
+            </div>
+            <div class="profile-text">
+                <h2>Shahzad Bangash</h2>
+                <p>Welcome to my blog! Here you'll find posts about my interests, hobbies, and experiences. Feel free to browse around and connect with me!</p>
+            </div>
+        </div>
+
+        <div class="intro">
+            <h2>About Me</h2>
+			<p>I am currently in the final year of my Bachelor's degree in Computer Systems Engineering at UET Peshawar, Pakistan.</p>
+        </div>
+
+        <div class="blog-posts">
+            <h2>Recent Posts</h2>
+            <div class="post mb-3">
+                <h3>Blog Post Title 1</h3>
+                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus lacinia odio vitae vestibulum.</p>
+                <a href="#" class="btn btn-primary">Read more</a>
+            </div>
+            <div class="post mb-3">
+                <h3>Blog Post Title 2</h3>
+                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus lacinia odio vitae vestibulum.</p>
+                <a href="#" class="btn btn-primary">Read more</a>
+            </div>
+            <div class="post mb-3">
+                <h3>Blog Post Title 3</h3>
+                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus lacinia odio vitae vestibulum.</p>
+                <a href="#" class="btn btn-primary">Read more</a>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <p>&copy; 2024 Your Name. All rights reserved.</p>
+    </footer>
+
+    <!-- Bootstrap JS and dependencies CDN -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/2.11.6/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/5.3.3/js/bootstrap.min.js"></script>
+</body>
 </html>
