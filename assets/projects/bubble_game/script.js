@@ -2,7 +2,7 @@ let ranHit = 0;
 let score = 0;
 let timer = 60;
 let color;
-let bubbleClickSound = new Audio("Sounds/tap_bubble.mp3");
+let bubbleClickSound = new Audio("sounds/tap_bubble.mp3");
 
 function makeBubbles(color){
     let ranNumber = 0;
