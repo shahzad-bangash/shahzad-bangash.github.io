@@ -141,6 +141,9 @@ window.onload = function () {
     title.innerText = "Bubble Hit Game";
     title.style.fontSize = "50px";
     title.style.color = "#333";
+    title.style.padding = "0px 70px";
+    title.style.justifyContent = "center";
+    title.style.alignItems = "center";
 
     const subtext = document.createElement("p");
 	subtext.innerText = "Click the bubbles that match the target number shown above before the timer runs out! \nTimer is set to 60 seconds. Good Luck!";
