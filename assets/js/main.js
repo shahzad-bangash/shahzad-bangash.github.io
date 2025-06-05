@@ -95,13 +95,13 @@
   }
   
   function updateHeaderTitleFromHash(hash) {
-    const headerLink = document.querySelector('.container h1 a');
+    const headerLink = document.querySelector('.container h1');
     if (!headerLink) return;
 
     if (!hash || hash === '#header') {
       headerLink.innerHTML = 'I\'am Shahzad Bangash';
     } else {
-      headerLink.innerHTML = '<i class="bx bx-home" style="transform: scale(1.3);"></i>';
+      headerLink.innerHTML = '<a href="index.html"><span class="home-icon-link"><i class="bx bx-home" style="transform: scale(2);"></i></a></span>';
     }
   }
 
