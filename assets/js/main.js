@@ -23,16 +23,17 @@
           return;
         }
 
-        if (!header.classList.contains('header-top')) {
-          header.classList.add('header-top');
+        var $header = $('#header');
+        if (!$header.hasClass('header-top')) {
+          $header.addClass('header-top');
           updateHeaderTitleFromHash(hash); 
           setTimeout(() => {
-            document.querySelectorAll('section').forEach(sec => sec.classList.remove('section-show'));
-            document.querySelector(hash).classList.add('section-show');
+            $("section").removeClass('section-show');
+            $(hash).addClass('section-show');
           }, 350);
         } else {
-          document.querySelectorAll('section').forEach(sec => sec.classList.remove('section-show'));
-          document.querySelector(hash).classList.add('section-show');
+          $("section").removeClass('section-show');
+          $(hash).addClass('section-show');
           updateHeaderTitleFromHash(hash); 
         }
 
