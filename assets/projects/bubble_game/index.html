@@ -1,34 +1,226 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Bubble Game</title>
-    <link rel="stylesheet" href="style.css">
-</head>
-<body>
-   <div id="main">
-    <div class="panel">
-        <div class="top-panel">
-            <h2>Score</h2>
-            <div class="box">
-                <div id="scoreVal" class="value">0</div>
-            </div>
-            <h2>Hit</h2>
-            <div class="box">
-                <div id="hitVal" class="value">0</div>
-            </div>
-            <h2>Timer</h2>
-            <div class="box">
-                <div id="timerVal" class="value">60</div>
-            </div>
-        </div>
-        <div class="bottom-panel">
-          
-        </div>
-    </div>
-   </div>
 
-    <script src="script.js"></script>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
+  <meta name="theme-color" content="#030712">
+  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+  <meta http-equiv="Pragma" content="no-cache">
+  <meta http-equiv="Expires" content="0">
+
+  <title>Bubble Pop Arcade | Modern Reflex Game - Shahzad Bangash</title>
+  <meta name="description"
+    content="Fast-paced, responsive arcade bubble popping web game created with modern glassmorphism aesthetic and audio feedback by Shahzad Bangash.">
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;500;600;700;800&family=Poppins:wght@400;500;600;700&display=swap"
+    rel="stylesheet">
+
+  <!-- Boxicons & Font Awesome -->
+  <link href="../../vendor/boxicons/css/boxicons.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+  <!-- Cache-busted Stylesheet -->
+  <link rel="stylesheet" href="style.css?v=3.0">
+</head>
+
+<body>
+
+  <!-- Ambient Dynamic Particle Canvas -->
+  <canvas id="bg-canvas" aria-hidden="true"></canvas>
+
+  <!-- Ambient Glow Orbs -->
+  <div class="bg-glow-orb bg-glow-orb-1" aria-hidden="true"></div>
+  <div class="bg-glow-orb bg-glow-orb-2" aria-hidden="true"></div>
+  <div class="bg-glow-orb bg-glow-orb-3" aria-hidden="true"></div>
+
+  <!-- Main Game Container -->
+  <main id="wrapper">
+
+    <!-- Top Navigation / Back to Portfolio -->
+    <header class="game-header">
+      <a href="../../../index.html#projects" class="back-link" id="backToPortfolio" aria-label="Back to Portfolio">
+        <i class="bx bx-arrow-back"></i>
+        <span>Portfolio</span>
+      </a>
+
+      <div class="difficulty-badge" id="speedBadge">
+        <span class="pulse-dot"></span>
+        <span id="badgeSpeedText">Arcade &bull; 60s</span>
+      </div>
+
+      <div class="header-actions">
+        <button class="icon-toggle-btn" id="restartBtn" aria-label="Restart Game" title="Restart Game">
+          <i class="bx bx-refresh"></i>
+        </button>
+        <button class="icon-toggle-btn" id="soundToggleBtn" aria-label="Toggle Sound" title="Toggle Sound">
+          <i class="bx bx-volume-full" id="soundIcon"></i>
+        </button>
+      </div>
+    </header>
+
+    <!-- Glassmorphic Card -->
+    <section class="game-card">
+
+      <!-- Left Status Sidebar -->
+      <aside class="game-sidebar" id="gameSidebar" aria-label="Game Status and Multiplier">
+
+        <div class="sidebar-header">
+          <h1 class="game-title">Bubble Pop</h1>
+          <span class="game-subtitle">Arcade Reflex</span>
+        </div>
+
+        <div class="sidebar-main-content">
+          <!-- Target Bubble Showcase -->
+          <div class="sidebar-card target-showcase-card">
+            <span class="stat-label">Hit Target</span>
+            <div class="target-bubble-wrap">
+              <!-- Target bubble styled IDENTICALLY to playfield bubbles with glow & exact theme -->
+              <div class="bubble target-bubble" id="hitVal">0</div>
+            </div>
+            <span class="target-hint">Match &amp; Pop</span>
+          </div>
+
+          <!-- Stats Grid (Timer, Score, High Score) -->
+          <div class="sidebar-stats-grid">
+            <!-- Timer -->
+            <div class="sidebar-stat-box timer-box">
+              <div class="stat-header">
+                <i class="bx bx-time-five"></i>
+                <span class="stat-label">Timer</span>
+              </div>
+              <div class="stat-val-wrap">
+                <span class="stat-val timer-val" id="timerVal">60</span><span class="stat-unit">s</span>
+              </div>
+            </div>
+
+            <!-- Score -->
+            <div class="sidebar-stat-box score-box">
+              <div class="stat-header">
+                <i class="bx bx-target-lock"></i>
+                <span class="stat-label">Score</span>
+              </div>
+              <span class="stat-val score-val" id="scoreVal">0</span>
+            </div>
+
+            <!-- High Score -->
+            <div class="sidebar-stat-box high-box">
+              <div class="stat-header">
+                <i class="bx bx-crown"></i>
+                <span class="stat-label">Best</span>
+              </div>
+              <span class="stat-val high-val" id="highScoreVal">0</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Dedicated Multiplier Showcase (Visual Combo Meter & Running Out Bar) -->
+        <div class="multiplier-showcase" id="multiplierShowcase">
+          <div class="multiplier-header">
+            <div class="multiplier-badge" id="streakIndicator">
+              <i class="bx bxs-zap"></i>
+              <span class="multiplier-title">Combo</span>
+              <span class="multiplier-val" id="streakCount">1x</span>
+            </div>
+            <div class="multiplier-countdown-wrap">
+              <span class="multiplier-timer-text" id="multiplierCountdown">3.0s</span>
+            </div>
+          </div>
+          <div class="multiplier-status-row">
+            <span class="multiplier-status" id="multiplierStatus">CHAIN COMBO</span>
+          </div>
+          <div class="multiplier-bar-track" id="comboTimerTrack">
+            <div class="multiplier-bar-fill" id="comboTimerFill"></div>
+          </div>
+        </div>
+
+      </aside>
+
+      <!-- Playfield Container -->
+      <div class="playfield-container">
+        <!-- The Bubbles Grid -->
+        <div class="bottom-panel" id="bubbleGrid" role="region" aria-label="Bubble Field"></div>
+
+        <!-- Start Overlay -->
+        <div class="card-overlay" id="startScreen">
+          <div class="overlay-modal">
+            <div class="overlay-icon-wrap">
+              <i class="bx bx-target-lock"></i>
+            </div>
+            <h2 class="overlay-title">Ready to Pop?</h2>
+            <p class="overlay-desc">
+              Match the glowing target number before the 60s timer expires. Keep popping quickly to maintain your
+              multiplier combo bar!
+            </p>
+            <div class="overlay-actions">
+              <button class="btn-action btn-primary" id="startBtn">
+                <i class="bx bx-play-circle"></i> Start Game
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Game Over Overlay -->
+        <div class="card-overlay" id="gameOverScreen" style="display: none;">
+          <div class="overlay-modal">
+            <div class="overlay-icon-wrap trophy-icon" id="gameOverIcon">
+              <i class="bx bx-trophy"></i>
+            </div>
+            <h2 class="overlay-title">Time's Up!</h2>
+
+            <div class="final-score-banner">
+              <span class="final-score-label">Final Score</span>
+              <span class="final-score-val" id="finalScoreVal">0</span>
+            </div>
+
+            <div class="game-stats-row">
+              <div class="stat-pill">
+                <span class="stat-pill-label">Max Streak</span>
+                <span class="stat-pill-val" id="maxStreakVal">0</span>
+              </div>
+              <div class="stat-pill">
+                <span class="stat-pill-label">Accuracy</span>
+                <span class="stat-pill-val" id="accuracyVal">100%</span>
+              </div>
+            </div>
+
+            <div class="new-high-score-banner" id="newHighScoreBanner" style="display: none;">
+              🎉 New High Score!
+            </div>
+
+            <div class="overlay-actions">
+              <button class="btn-action btn-primary" id="playAgainBtn">
+                <i class="bx bx-redo"></i> Play Again
+              </button>
+              <button class="btn-action btn-secondary" id="resetScoreBtn">
+                <i class="bx bx-reset"></i> Reset High Score
+              </button>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+    </section>
+
+    <!-- Footer Credit -->
+    <footer class="game-footer">
+      <span>Crafted by <a href="../../../index.html" class="footer-link">Shahzad Bangash</a></span>
+    </footer>
+
+    <!-- Audio Elements Fallback -->
+    <audio id="bubble-sound" src="sounds/tap_bubble.mp3" preload="auto"></audio>
+    <audio id="hit-sound" src="sounds/pop.mp3" preload="auto"></audio>
+    <audio id="game-over-sound" src="sounds/game_over.mp3" preload="auto"></audio>
+
+  </main>
+
+  <!-- Cache-busted Script -->
+  <script src="script.js?v=3.0"></script>
 </body>
+
 </html>
