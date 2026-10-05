@@ -29,9 +29,9 @@
   <link href="assets/vendor/boxicons/css/boxicons.min.css" rel="stylesheet">
 
   <!-- Main Custom CSS File -->
-  <link href="assets/css/style.css?v=3.1" rel="stylesheet">
+  <link href="assets/css/style.css?v=3.5" rel="stylesheet">
   <!-- Unified Theme Engine Stylesheet -->
-  <link href="assets/css/themes.css?v=1.1" rel="stylesheet">
+  <link href="assets/css/themes.css?v=1.5" rel="stylesheet">
 
   <!-- Instant Theme Attribute Setup (Avoid FOUT) -->
   <script>
@@ -61,38 +61,73 @@
   <div class="bg-glow-orb bg-glow-orb-2" aria-hidden="true"></div>
   <div class="bg-glow-orb bg-glow-orb-3" aria-hidden="true"></div>
 
-  <!-- Mobile Navigation Toggle Button -->
-  <button type="button" class="mobile-nav-toggle d-lg-none" aria-label="Toggle navigation menu" id="mobileNavBtn">
-    <span class="bar bar-1"></span>
-    <span class="bar bar-2"></span>
-    <span class="bar bar-3"></span>
-  </button>
+  <!-- Fixed Top Navigation Bar (Desktop & Mobile Unified) -->
+  <header class="header-topbar" id="headerTopbar">
+    <div class="topbar-container">
+      <!-- Brand / Home Link -->
+      <div class="topbar-brand">
+        <a href="#header" class="brand-link" aria-label="Shahzad Bangash">
+          <i class="bx bx-home-alt"></i>
+          <span class="brand-text">Home</span>
+        </a>
+      </div>
 
-  <!-- Mobile Navigation Overlay & Drawer -->
-  <div class="mobile-nav-overlay" id="mobileNavOverlay"></div>
-  <nav class="mobile-nav d-lg-none" id="mobileNavDrawer" aria-label="Mobile Navigation">
-    <div class="mobile-nav-header">
-      <div class="mobile-nav-brand">
-        <!-- <img src="favicon.png" alt="Shahzad Bangash" class="mobile-brand-img"> -->
-        <span>Shahzad Bangash</span>
+      <!-- Desktop Navigation Actions (Visible on Desktop >= 992px) -->
+      <div class="topbar-desktop-actions d-none d-lg-flex">
+        <nav class="nav-menu" aria-label="Main Navigation">
+          <ul>
+            <li><a href="#projects"><span>Projects</span></a></li>
+            <li><a href="#about"><span>About</span></a></li>
+          </ul>
+        </nav>
+
+        <!-- Social Links -->
+        <div class="social-links">
+          <a href="https://www.linkedin.com/in/shahzad-bangash" target="_blank" rel="noopener noreferrer"
+            class="social-link" title="LinkedIn" aria-label="LinkedIn">
+            <i class="bx bxl-linkedin"></i>
+          </a>
+          <a href="https://www.github.com/shahzad-bangash" target="_blank" rel="noopener noreferrer" class="social-link"
+            title="GitHub" aria-label="GitHub">
+            <i class="bx bxl-github"></i>
+          </a>
+          <a href="mailto:shahzadbangash.office@gmail.com" class="social-link" title="Send Email" aria-label="Send Email">
+            <i class="bx bx-envelope"></i>
+          </a>
+        </div>
+
+        <!-- Theme Switcher Button - Positioned LAST after Social Links (Icon Only) -->
+        <div class="theme-switcher-wrapper" data-align="right">
+          <button type="button" class="theme-trigger-btn" title="Click to switch theme" aria-label="Switch Theme">
+            <i class="bx bx-palette theme-palette-icon"></i>
+          </button>
+        </div>
+      </div>
+
+      <!-- Mobile Navigation Actions (Visible on Mobile < 992px) -->
+      <div class="topbar-mobile-actions d-flex d-lg-none">
+        <div class="theme-switcher-wrapper" data-align="right">
+          <button type="button" class="theme-trigger-btn" title="Click to switch theme" aria-label="Switch Theme">
+            <i class="bx bx-palette theme-palette-icon"></i>
+          </button>
+        </div>
+        <button type="button" class="mobile-nav-toggle" aria-label="Toggle navigation menu" id="mobileNavBtn">
+          <span class="bar bar-1"></span>
+          <span class="bar bar-2"></span>
+          <span class="bar bar-3"></span>
+        </button>
       </div>
     </div>
+  </header>
+
+  <!-- Mobile Navigation Overlay & Dropdown Menu (Directly docked below Top Bar) -->
+  <div class="mobile-nav-overlay" id="mobileNavOverlay"></div>
+  <nav class="mobile-nav d-lg-none" id="mobileNavDrawer" aria-label="Mobile Navigation">
     <ul class="mobile-nav-links">
       <li><a href="#header" class="mobile-link active"><i class="bx bx-home-alt"></i> <span>Home</span></a></li>
       <li><a href="#projects" class="mobile-link"><i class="bx bx-grid-alt"></i> <span>Projects</span></a></li>
       <li><a href="#about" class="mobile-link"><i class="bx bx-user"></i> <span>About</span></a></li>
     </ul>
-    <div class="mobile-theme-selector">
-      <span class="mobile-theme-title"><i class="bx bx-palette"></i> Theme</span>
-      <div class="theme-switcher-wrapper" data-align="center">
-        <button type="button" class="theme-trigger-btn" title="Click to switch theme" aria-label="Switch Theme">
-          <i class="bx bx-palette theme-palette-icon"></i>
-          <span class="theme-mini-swatch"></span>
-          <span class="theme-label-text">Dark Blue</span>
-          <i class="bx bx-sync theme-cycle-icon"></i>
-        </button>
-      </div>
-    </div>
     <div class="mobile-nav-footer">
       <div class="mobile-socials">
         <a href="https://www.linkedin.com/in/shahzad-bangash" target="_blank" rel="noopener noreferrer"
@@ -107,29 +142,10 @@
 
   <!-- ======= Header / Hero Section ======= -->
   <header id="header" class="header-initial">
+
+    <!-- Hero Main Content (Centered in viewport) -->
     <div class="container hero-container">
-
-      <!-- Compact Topbar Home Link (shown only in .header-top state on the left) -->
-      <div class="header-top-brand d-none">
-        <a href="#header" class="brand-link" aria-label="Back to Home">
-          <i class="bx bx-home-alt"></i>
-          <span class="brand-text">Home</span>
-        </a>
-      </div>
-
-      <!-- Hero Main Content (shown in initial full-screen state) -->
       <div class="hero-content">
-
-
-        <!-- Profile Avatar with Animated Glow Ring -->
-        <!--
-        <div class="hero-avatar-wrapper">
-          <div class="hero-avatar-glow"></div>
-          <div class="hero-avatar">
-            <img src="favicon.png" alt="Shahzad Bangash" class="hero-avatar-img">
-          </div>
-        </div>
-        -->
 
         <h1 id="home-title" class="hero-title">
           Hi, I'm <span class="hero-name-highlight">Shahzad Bangash</span>
@@ -161,43 +177,8 @@
         </div>
 
       </div>
-
-      <!-- Desktop Navigation Menu -->
-      <nav class="nav-menu d-none d-lg-block" aria-label="Main Navigation">
-        <ul>
-          <li><a href="#projects"><span>Projects</span></a></li>
-          <li><a href="#about"><span>About</span></a></li>
-        </ul>
-      </nav>
-
-      <!-- Header Top Actions (Theme Switcher & Social Links) -->
-      <div class="header-actions-wrapper d-none d-lg-flex">
-        <div class="theme-switcher-wrapper" data-align="right">
-          <button type="button" class="theme-trigger-btn" title="Click to switch theme" aria-label="Switch Theme">
-            <i class="bx bx-palette theme-palette-icon"></i>
-            <span class="theme-mini-swatch"></span>
-            <span class="theme-label-text">Dark Blue</span>
-            <i class="bx bx-sync theme-cycle-icon"></i>
-          </button>
-        </div>
-
-        <!-- Social Links -->
-        <div class="social-links">
-          <a href="https://www.linkedin.com/in/shahzad-bangash" target="_blank" rel="noopener noreferrer"
-            class="social-link" title="LinkedIn" aria-label="LinkedIn">
-            <i class="bx bxl-linkedin"></i>
-          </a>
-          <a href="https://www.github.com/shahzad-bangash" target="_blank" rel="noopener noreferrer" class="social-link"
-            title="GitHub" aria-label="GitHub">
-            <i class="bx bxl-github"></i>
-          </a>
-          <a href="mailto:shahzadbangash.office@gmail.com" class="social-link" title="Send Email" aria-label="Send Email">
-            <i class="bx bx-envelope"></i>
-          </a>
-        </div>
-      </div>
-
     </div>
+
   </header>
   <!-- End Header -->
 

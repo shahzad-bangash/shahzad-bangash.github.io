@@ -142,17 +142,20 @@
 
   function getSavedTheme() {
     try {
-      // 1. Check persistent localStorage first (user's active selection across entire site)
-      const saved = normalizeThemeId(localStorage.getItem(STORAGE_KEY));
-      if (saved && THEMES.some(t => t.id === saved)) {
-        return saved;
-      }
-
-      // 2. Fall back to URL query parameter if localStorage is empty
+      // 1. Check URL query parameter first (if explicitly specified in URL or link)
       const urlParams = new URLSearchParams(window.location.search);
       const urlTheme = normalizeThemeId(urlParams.get("theme"));
       if (urlTheme && THEMES.some(t => t.id === urlTheme)) {
+        try {
+          localStorage.setItem(STORAGE_KEY, urlTheme);
+        } catch (_) {}
         return urlTheme;
+      }
+
+      // 2. Check persistent localStorage (user's active selection across entire site)
+      const saved = normalizeThemeId(localStorage.getItem(STORAGE_KEY));
+      if (saved && THEMES.some(t => t.id === saved)) {
+        return saved;
       }
     } catch (e) {
       console.warn("Theme storage access error:", e);
@@ -333,12 +336,17 @@
       caret.remove();
     }
 
-    // Add cycle icon if not already present
-    if (!trigger.querySelector(".theme-cycle-icon")) {
-      const cycleIcon = document.createElement("i");
-      cycleIcon.className = "bx bx-sync theme-cycle-icon";
-      trigger.appendChild(cycleIcon);
+    // Remove cycle icon if present (button is now icon-only)
+    const existingCycleIcon = trigger.querySelector(".theme-cycle-icon");
+    if (existingCycleIcon) {
+      existingCycleIcon.remove();
     }
+
+    // Remove swatch and label if present (button is now icon-only)
+    const existingSwatch = trigger.querySelector(".theme-mini-swatch");
+    if (existingSwatch) existingSwatch.remove();
+    const existingLabel = trigger.querySelector(".theme-label-text");
+    if (existingLabel) existingLabel.remove();
 
     // Direct click handler: cycle to next theme
     trigger.addEventListener("click", e => {

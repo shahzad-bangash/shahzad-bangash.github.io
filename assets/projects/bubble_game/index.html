@@ -30,9 +30,9 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 
   <!-- Cache-busted Stylesheet -->
-  <link rel="stylesheet" href="style.css?v=3.1">
+  <link rel="stylesheet" href="style.css?v=3.2">
   <!-- Unified Theme Engine Stylesheet -->
-  <link rel="stylesheet" href="../../css/themes.css?v=1.1">
+  <link rel="stylesheet" href="../../css/themes.css?v=1.5">
 
   <!-- Instant Theme Attribute Setup (Avoid FOUT) -->
   <script>
@@ -72,58 +72,58 @@
         <span>Portfolio</span>
       </a>
 
-      <!-- Interactive Duration Mode Badge with Dropdown -->
-      <div class="difficulty-badge-wrap">
-        <button class="difficulty-badge" id="speedBadge" aria-haspopup="dialog" aria-expanded="false"
-          title="Select Game Duration" aria-label="Game Duration: 1m Classic">
-          <span class="pulse-dot"></span>
-          <span id="badgeSpeedText">Arcade &bull; 1m</span>
-          <i class="bx bx-chevron-down badge-caret" id="badgeCaret" aria-hidden="true"></i>
-        </button>
+      <!-- Interactive Duration Mode Badge and Quick Restart Action -->
+      <div class="header-center-group">
+        <div class="difficulty-badge-wrap">
+          <button class="difficulty-badge" id="speedBadge" aria-haspopup="dialog" aria-expanded="false"
+            title="Select Game Duration" aria-label="Game Duration: 1m Classic">
+            <span class="pulse-dot"></span>
+            <span id="badgeSpeedText">Arcade &bull; 1m</span>
+            <i class="bx bx-chevron-down badge-caret" id="badgeCaret" aria-hidden="true"></i>
+          </button>
 
-        <!-- Popover Dropdown for Duration Selection -->
-        <div class="timer-popover" id="timerPopover" role="menu" aria-label="Game Duration Options"
-          style="display: none;">
-          <div class="popover-header">
-            <span class="popover-title"><i class="bx bx-timer"></i> Game Duration</span>
-          </div>
-          <div class="popover-options">
-            <button type="button" class="popover-item" data-duration="15" role="menuitem">
-              <span class="popover-badge"><i class="bx bxs-zap"></i> 15s</span>
-              <span class="popover-name">Blitz</span>
-              <span class="popover-best" id="popBest15">Best: 0</span>
-            </button>
-            <button type="button" class="popover-item" data-duration="30" role="menuitem">
-              <span class="popover-badge"><i class="bx bx-stopwatch"></i> 30s</span>
-              <span class="popover-name">Quick</span>
-              <span class="popover-best" id="popBest30">Best: 0</span>
-            </button>
-            <button type="button" class="popover-item active" data-duration="60" role="menuitem">
-              <span class="popover-badge"><i class="bx bx-time-five"></i> 1m</span>
-              <span class="popover-name">Classic</span>
-              <span class="popover-best" id="popBest60">Best: 0</span>
-            </button>
-            <button type="button" class="popover-item" data-duration="120" role="menuitem">
-              <span class="popover-badge"><i class="bx bx-hourglass"></i> 2m</span>
-              <span class="popover-name">Endurance</span>
-              <span class="popover-best" id="popBest120">Best: 0</span>
-            </button>
+          <!-- Popover Dropdown for Duration Selection -->
+          <div class="timer-popover" id="timerPopover" role="menu" aria-label="Game Duration Options"
+            style="display: none;">
+            <div class="popover-header">
+              <span class="popover-title"><i class="bx bx-timer"></i> Game Duration</span>
+            </div>
+            <div class="popover-options">
+              <button type="button" class="popover-item" data-duration="15" role="menuitem">
+                <span class="popover-badge"><i class="bx bxs-zap"></i> 15s</span>
+                <span class="popover-name">Blitz</span>
+                <span class="popover-best" id="popBest15">Best: 0</span>
+              </button>
+              <button type="button" class="popover-item" data-duration="30" role="menuitem">
+                <span class="popover-badge"><i class="bx bx-stopwatch"></i> 30s</span>
+                <span class="popover-name">Quick</span>
+                <span class="popover-best" id="popBest30">Best: 0</span>
+              </button>
+              <button type="button" class="popover-item active" data-duration="60" role="menuitem">
+                <span class="popover-badge"><i class="bx bx-time-five"></i> 1m</span>
+                <span class="popover-name">Classic</span>
+                <span class="popover-best" id="popBest60">Best: 0</span>
+              </button>
+              <button type="button" class="popover-item" data-duration="120" role="menuitem">
+                <span class="popover-badge"><i class="bx bx-hourglass"></i> 2m</span>
+                <span class="popover-name">Endurance</span>
+                <span class="popover-best" id="popBest120">Best: 0</span>
+              </button>
+            </div>
           </div>
         </div>
+
+        <button class="icon-toggle-btn" id="restartBtn" aria-label="Restart Game" title="Restart Game">
+          <i class="bx bx-refresh"></i>
+        </button>
       </div>
 
       <div class="header-actions">
         <div class="theme-switcher-wrapper" data-align="right">
           <button type="button" class="theme-trigger-btn" title="Click to switch theme" aria-label="Switch Theme">
             <i class="bx bx-palette theme-palette-icon"></i>
-            <span class="theme-mini-swatch"></span>
-            <span class="theme-label-text">Dark Blue</span>
-            <i class="bx bx-sync theme-cycle-icon"></i>
           </button>
         </div>
-        <button class="icon-toggle-btn" id="restartBtn" aria-label="Restart Game" title="Restart Game">
-          <i class="bx bx-refresh"></i>
-        </button>
         <button class="icon-toggle-btn" id="soundToggleBtn" aria-label="Toggle Sound" title="Toggle Sound">
           <i class="bx bx-volume-full" id="soundIcon"></i>
         </button>
