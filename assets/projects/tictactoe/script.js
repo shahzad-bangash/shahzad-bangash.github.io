@@ -628,6 +628,19 @@
     const count = width < 768 ? 40 : 75;
     const connectionDist = width < 768 ? 95 : 125;
 
+    let currentThemeParticleColors = (window.PortfolioTheme && window.PortfolioTheme.getCurrentThemeConfig().particleColors)
+      ? window.PortfolioTheme.getCurrentThemeConfig().particleColors
+      : ["56, 189, 248", "99, 102, 241"];
+
+    window.addEventListener("portfolio:themechange", function (e) {
+      if (e.detail && e.detail.theme && e.detail.theme.particleColors) {
+        currentThemeParticleColors = e.detail.theme.particleColors;
+        particles.forEach(function (p) {
+          p.color = Math.random() > 0.4 ? currentThemeParticleColors[0] : currentThemeParticleColors[1];
+        });
+      }
+    });
+
     class Particle {
       constructor() {
         this.reset();
@@ -639,7 +652,7 @@
         this.vy = (Math.random() - 0.5) * 0.7;
         this.radius = Math.random() * 1.6 + 0.8;
         this.alpha = Math.random() * 0.5 + 0.25;
-        this.color = Math.random() > 0.4 ? "56, 189, 248" : "99, 102, 241";
+        this.color = Math.random() > 0.4 ? currentThemeParticleColors[0] : currentThemeParticleColors[1];
       }
       update() {
         this.x += this.vx;
@@ -676,7 +689,7 @@
             ctx.beginPath();
             ctx.moveTo(particles[i].x, particles[i].y);
             ctx.lineTo(particles[j].x, particles[j].y);
-            ctx.strokeStyle = `rgba(56, 189, 248, ${lineAlpha})`;
+            ctx.strokeStyle = `rgba(${currentThemeParticleColors[0]}, ${lineAlpha})`;
             ctx.lineWidth = 0.8;
             ctx.stroke();
           }

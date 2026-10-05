@@ -13,6 +13,11 @@
   <meta name="description"
     content="Play modern Tic Tac Toe against an unbeatable Minimax AI opponent. Designed to match Shahzad Bangash's modern tech aesthetic.">
 
+  <!-- Favicon -->
+  <link rel="icon" type="image/x-icon" href="../../../favicon.ico">
+  <link rel="icon" type="image/png" href="../../../favicon.png">
+  <link rel="apple-touch-icon" href="../../../favicon.png">
+
   <!-- Google Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -26,6 +31,25 @@
 
   <!-- Cache-busted Stylesheet -->
   <link rel="stylesheet" href="style.css?v=2.6">
+  <!-- Unified Theme Engine Stylesheet -->
+  <link rel="stylesheet" href="../../css/themes.css?v=1.1">
+
+  <!-- Instant Theme Attribute Setup (Avoid FOUT) -->
+  <script>
+    (function () {
+      try {
+        var saved = localStorage.getItem("shahzad_portfolio_theme");
+        var params = new URLSearchParams(window.location.search);
+        var t = saved || params.get("theme") || "dark-blue";
+        if (t === "cyber-dark" || t === "cyber-void") t = "dark-blue";
+        if (t === "clean-light") t = "light-blue";
+        if (t === "emerald-green" || t === "emerald-matrix") t = "green";
+        if (t === "neon-purple" || t === "neon-sakura") t = "purple";
+        if (t === "arctic-blue" || t === "arctic-frost") t = "red";
+        document.documentElement.setAttribute("data-theme", t);
+      } catch (e) {}
+    })();
+  </script>
 </head>
 
 <body>
@@ -51,9 +75,19 @@
         <span class="pulse-dot"></span>
         <span id="badgeDifficultyText">Minimax &bull; Hard</span>
       </div>
-      <button class="icon-toggle-btn" id="soundToggleBtn" aria-label="Toggle Sound" title="Toggle Sound">
-        <i class="bx bx-volume-full" id="soundIcon"></i>
-      </button>
+      <div class="header-actions">
+        <div class="theme-switcher-wrapper" data-align="right">
+          <button type="button" class="theme-trigger-btn" title="Click to switch theme" aria-label="Switch Theme">
+            <i class="bx bx-palette theme-palette-icon"></i>
+            <span class="theme-mini-swatch"></span>
+            <span class="theme-label-text">Dark Blue</span>
+            <i class="bx bx-sync theme-cycle-icon"></i>
+          </button>
+        </div>
+        <button class="icon-toggle-btn" id="soundToggleBtn" aria-label="Toggle Sound" title="Toggle Sound">
+          <i class="bx bx-volume-full" id="soundIcon"></i>
+        </button>
+      </div>
     </header>
 
     <!-- Glassmorphic Card -->
@@ -166,6 +200,9 @@
     <audio id="game-over-sound" src="sounds/game_over.mp3" preload="auto"></audio>
 
   </main>
+
+  <!-- Theme Manager Engine -->
+  <script src="../../js/theme-manager.js?v=1.1"></script>
 
   <!-- Cache-busted Script -->
   <script src="script.js?v=2.6"></script>

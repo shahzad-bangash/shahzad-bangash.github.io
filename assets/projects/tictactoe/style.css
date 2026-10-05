@@ -166,6 +166,12 @@ body {
   width: 100%;
 }
 
+.header-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+
 .back-link {
   display: inline-flex;
   align-items: center;

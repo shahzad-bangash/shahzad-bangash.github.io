@@ -46,14 +46,14 @@ An adrenaline-pumping, fast-paced reflex arcade web game built with Vanilla HTML
 ## 🎯 How to Play
 
 1. **Check the Target**: Observe the glowing **Hit Target** bubble in the left sidebar.
-2. **Pop the Matches**: Tap or click every matching numbered bubble in the playfield before the 60-second timer expires.
+2. **Pop the Matches**: Tap or click every matching numbered bubble in the playfield before the timer (15s, 30s, 1m, or 2m) expires.
 3. **Chain Combos**: Pop target bubbles in rapid succession (&lt; 3.0s apart) to build your **Multiplier** (up to 5x+ streak bonus points).
 4. **Beat the High Score**: Keep an eye on the urgency warning bar and strive for 100% accuracy.
 
 ---
 
-## ✨ Features
-
+- ⏱️ **Selectable Game Durations**: Choose between 4 distinct timer modes tailored to your reflex speed: **15s Blitz**, **30s Quick**, **1m Classic**, and **2m Endurance**.
+- 🏆 **Per-Mode High Scores**: Independent high score leaderboards tracked per duration mode in localStorage.
 - 🎛️ **Left Sidebar Command Center**: Status indicators (Target Bubble, Timer, Score, High Score, and Multiplier gauge) positioned in a dedicated left sidebar, maximizing vertical playfield space for bubbles.
 - ⚡ **Dynamic Multiplier Combo Bar**: 3.0-second running-out urgency bar that rewards high-velocity precision.
 - 🔊 **Web Audio Synthesizer**: Pitch-scaling pop synth sounds that rise in frequency as your combo builds, downward wrong-hit audio, and victory fanfare.

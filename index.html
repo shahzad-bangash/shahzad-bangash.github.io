@@ -13,6 +13,7 @@
     content="Shahzad Bangash, AI Developer, FPGA, Computer Systems Engineer, Embedded Systems, Machine Learning, Portfolio">
 
   <!-- Favicon -->
+  <link rel="icon" type="image/x-icon" href="favicon.ico" />
   <link rel="icon" type="image/png" href="favicon.png" />
   <link rel="apple-touch-icon" href="favicon.png" />
 
@@ -29,6 +30,25 @@
 
   <!-- Main Custom CSS File -->
   <link href="assets/css/style.css?v=3.1" rel="stylesheet">
+  <!-- Unified Theme Engine Stylesheet -->
+  <link href="assets/css/themes.css?v=1.1" rel="stylesheet">
+
+  <!-- Instant Theme Attribute Setup (Avoid FOUT) -->
+  <script>
+    (function () {
+      try {
+        var saved = localStorage.getItem("shahzad_portfolio_theme");
+        var params = new URLSearchParams(window.location.search);
+        var t = saved || params.get("theme") || "dark-blue";
+        if (t === "cyber-dark" || t === "cyber-void") t = "dark-blue";
+        if (t === "clean-light") t = "light-blue";
+        if (t === "emerald-green" || t === "emerald-matrix") t = "green";
+        if (t === "neon-purple" || t === "neon-sakura") t = "purple";
+        if (t === "arctic-blue" || t === "arctic-frost") t = "red";
+        document.documentElement.setAttribute("data-theme", t);
+      } catch (e) {}
+    })();
+  </script>
 </head>
 
 <body>
@@ -62,6 +82,17 @@
       <li><a href="#projects" class="mobile-link"><i class="bx bx-grid-alt"></i> <span>Projects</span></a></li>
       <li><a href="#about" class="mobile-link"><i class="bx bx-user"></i> <span>About</span></a></li>
     </ul>
+    <div class="mobile-theme-selector">
+      <span class="mobile-theme-title"><i class="bx bx-palette"></i> Theme</span>
+      <div class="theme-switcher-wrapper" data-align="center">
+        <button type="button" class="theme-trigger-btn" title="Click to switch theme" aria-label="Switch Theme">
+          <i class="bx bx-palette theme-palette-icon"></i>
+          <span class="theme-mini-swatch"></span>
+          <span class="theme-label-text">Dark Blue</span>
+          <i class="bx bx-sync theme-cycle-icon"></i>
+        </button>
+      </div>
+    </div>
     <div class="mobile-nav-footer">
       <div class="mobile-socials">
         <a href="https://www.linkedin.com/in/shahzad-bangash" target="_blank" rel="noopener noreferrer"
@@ -101,7 +132,7 @@
         -->
 
         <h1 id="home-title" class="hero-title">
-          Hi, I'm <span style="color: rgb(126, 187, 240);">Shahzad Bangash</span>
+          Hi, I'm <span class="hero-name-highlight">Shahzad Bangash</span>
         </h1>
 
         <h2 class="hero-subtitle">
@@ -139,19 +170,31 @@
         </ul>
       </nav>
 
-      <!-- Social Links -->
-      <div class="social-links">
-        <a href="https://www.linkedin.com/in/shahzad-bangash" target="_blank" rel="noopener noreferrer"
-          class="social-link" title="LinkedIn" aria-label="LinkedIn">
-          <i class="bx bxl-linkedin"></i>
-        </a>
-        <a href="https://www.github.com/shahzad-bangash" target="_blank" rel="noopener noreferrer" class="social-link"
-          title="GitHub" aria-label="GitHub">
-          <i class="bx bxl-github"></i>
-        </a>
-        <a href="mailto:shahzadbangash.office@gmail.com" class="social-link" title="Send Email" aria-label="Send Email">
-          <i class="bx bx-envelope"></i>
-        </a>
+      <!-- Header Top Actions (Theme Switcher & Social Links) -->
+      <div class="header-actions-wrapper d-none d-lg-flex">
+        <div class="theme-switcher-wrapper" data-align="right">
+          <button type="button" class="theme-trigger-btn" title="Click to switch theme" aria-label="Switch Theme">
+            <i class="bx bx-palette theme-palette-icon"></i>
+            <span class="theme-mini-swatch"></span>
+            <span class="theme-label-text">Dark Blue</span>
+            <i class="bx bx-sync theme-cycle-icon"></i>
+          </button>
+        </div>
+
+        <!-- Social Links -->
+        <div class="social-links">
+          <a href="https://www.linkedin.com/in/shahzad-bangash" target="_blank" rel="noopener noreferrer"
+            class="social-link" title="LinkedIn" aria-label="LinkedIn">
+            <i class="bx bxl-linkedin"></i>
+          </a>
+          <a href="https://www.github.com/shahzad-bangash" target="_blank" rel="noopener noreferrer" class="social-link"
+            title="GitHub" aria-label="GitHub">
+            <i class="bx bxl-github"></i>
+          </a>
+          <a href="mailto:shahzadbangash.office@gmail.com" class="social-link" title="Send Email" aria-label="Send Email">
+            <i class="bx bx-envelope"></i>
+          </a>
+        </div>
       </div>
 
     </div>
@@ -592,6 +635,9 @@
       startDelay: 300
     });
   </script>
+
+  <!-- Theme Manager Engine -->
+  <script src="assets/js/theme-manager.js?v=1.1"></script>
 
   <!-- Main Website JavaScript -->
   <script src="assets/js/main.js?v=3.1"></script>

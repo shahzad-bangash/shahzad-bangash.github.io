@@ -13,6 +13,11 @@
   <meta name="description"
     content="Fast-paced, responsive arcade bubble popping web game created with modern glassmorphism aesthetic and audio feedback by Shahzad Bangash.">
 
+  <!-- Favicon -->
+  <link rel="icon" type="image/x-icon" href="../../../favicon.ico">
+  <link rel="icon" type="image/png" href="../../../favicon.png">
+  <link rel="apple-touch-icon" href="../../../favicon.png">
+
   <!-- Google Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -25,7 +30,26 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 
   <!-- Cache-busted Stylesheet -->
-  <link rel="stylesheet" href="style.css?v=3.0">
+  <link rel="stylesheet" href="style.css?v=3.1">
+  <!-- Unified Theme Engine Stylesheet -->
+  <link rel="stylesheet" href="../../css/themes.css?v=1.1">
+
+  <!-- Instant Theme Attribute Setup (Avoid FOUT) -->
+  <script>
+    (function () {
+      try {
+        var saved = localStorage.getItem("shahzad_portfolio_theme");
+        var params = new URLSearchParams(window.location.search);
+        var t = saved || params.get("theme") || "dark-blue";
+        if (t === "cyber-dark" || t === "cyber-void") t = "dark-blue";
+        if (t === "clean-light") t = "light-blue";
+        if (t === "emerald-green" || t === "emerald-matrix") t = "green";
+        if (t === "neon-purple" || t === "neon-sakura") t = "purple";
+        if (t === "arctic-blue" || t === "arctic-frost") t = "red";
+        document.documentElement.setAttribute("data-theme", t);
+      } catch (e) {}
+    })();
+  </script>
 </head>
 
 <body>
@@ -48,12 +72,55 @@
         <span>Portfolio</span>
       </a>
 
-      <div class="difficulty-badge" id="speedBadge">
-        <span class="pulse-dot"></span>
-        <span id="badgeSpeedText">Arcade &bull; 60s</span>
+      <!-- Interactive Duration Mode Badge with Dropdown -->
+      <div class="difficulty-badge-wrap">
+        <button class="difficulty-badge" id="speedBadge" aria-haspopup="dialog" aria-expanded="false"
+          title="Select Game Duration" aria-label="Game Duration: 1m Classic">
+          <span class="pulse-dot"></span>
+          <span id="badgeSpeedText">Arcade &bull; 1m</span>
+          <i class="bx bx-chevron-down badge-caret" id="badgeCaret" aria-hidden="true"></i>
+        </button>
+
+        <!-- Popover Dropdown for Duration Selection -->
+        <div class="timer-popover" id="timerPopover" role="menu" aria-label="Game Duration Options"
+          style="display: none;">
+          <div class="popover-header">
+            <span class="popover-title"><i class="bx bx-timer"></i> Game Duration</span>
+          </div>
+          <div class="popover-options">
+            <button type="button" class="popover-item" data-duration="15" role="menuitem">
+              <span class="popover-badge"><i class="bx bxs-zap"></i> 15s</span>
+              <span class="popover-name">Blitz</span>
+              <span class="popover-best" id="popBest15">Best: 0</span>
+            </button>
+            <button type="button" class="popover-item" data-duration="30" role="menuitem">
+              <span class="popover-badge"><i class="bx bx-stopwatch"></i> 30s</span>
+              <span class="popover-name">Quick</span>
+              <span class="popover-best" id="popBest30">Best: 0</span>
+            </button>
+            <button type="button" class="popover-item active" data-duration="60" role="menuitem">
+              <span class="popover-badge"><i class="bx bx-time-five"></i> 1m</span>
+              <span class="popover-name">Classic</span>
+              <span class="popover-best" id="popBest60">Best: 0</span>
+            </button>
+            <button type="button" class="popover-item" data-duration="120" role="menuitem">
+              <span class="popover-badge"><i class="bx bx-hourglass"></i> 2m</span>
+              <span class="popover-name">Endurance</span>
+              <span class="popover-best" id="popBest120">Best: 0</span>
+            </button>
+          </div>
+        </div>
       </div>
 
       <div class="header-actions">
+        <div class="theme-switcher-wrapper" data-align="right">
+          <button type="button" class="theme-trigger-btn" title="Click to switch theme" aria-label="Switch Theme">
+            <i class="bx bx-palette theme-palette-icon"></i>
+            <span class="theme-mini-swatch"></span>
+            <span class="theme-label-text">Dark Blue</span>
+            <i class="bx bx-sync theme-cycle-icon"></i>
+          </button>
+        </div>
         <button class="icon-toggle-btn" id="restartBtn" aria-label="Restart Game" title="Restart Game">
           <i class="bx bx-refresh"></i>
         </button>
@@ -152,10 +219,49 @@
               <i class="bx bx-target-lock"></i>
             </div>
             <h2 class="overlay-title">Ready to Pop?</h2>
-            <p class="overlay-desc">
-              Match the glowing target number before the 60s timer expires. Keep popping quickly to maintain your
+            <p class="overlay-desc" id="startScreenDesc">
+              Match the glowing target number before the 1m timer expires. Keep popping quickly to maintain your
               multiplier combo bar!
             </p>
+
+            <!-- Duration Selector Section -->
+            <div class="timer-select-section">
+              <div class="timer-select-header">
+                <span class="timer-select-title"><i class="bx bx-timer"></i> Select Duration</span>
+                <span class="timer-select-high-label" id="startScreenBestBadge">Best: 0</span>
+              </div>
+              <div class="timer-pill-grid" role="radiogroup" aria-label="Game Duration">
+                <button type="button" class="timer-pill-btn" data-duration="15" aria-checked="false">
+                  <div class="pill-top">
+                    <i class="bx bxs-zap"></i>
+                    <span class="pill-duration">15s</span>
+                  </div>
+                  <span class="pill-label">Blitz</span>
+                </button>
+                <button type="button" class="timer-pill-btn" data-duration="30" aria-checked="false">
+                  <div class="pill-top">
+                    <i class="bx bx-stopwatch"></i>
+                    <span class="pill-duration">30s</span>
+                  </div>
+                  <span class="pill-label">Quick</span>
+                </button>
+                <button type="button" class="timer-pill-btn active" data-duration="60" aria-checked="true">
+                  <div class="pill-top">
+                    <i class="bx bx-time-five"></i>
+                    <span class="pill-duration">1m</span>
+                  </div>
+                  <span class="pill-label">Classic</span>
+                </button>
+                <button type="button" class="timer-pill-btn" data-duration="120" aria-checked="false">
+                  <div class="pill-top">
+                    <i class="bx bx-hourglass"></i>
+                    <span class="pill-duration">2m</span>
+                  </div>
+                  <span class="pill-label">Endurance</span>
+                </button>
+              </div>
+            </div>
+
             <div class="overlay-actions">
               <button class="btn-action btn-primary" id="startBtn">
                 <i class="bx bx-play-circle"></i> Start Game
@@ -173,6 +279,8 @@
             <h2 class="overlay-title">Time's Up!</h2>
 
             <div class="final-score-banner">
+              <span class="final-mode-badge" id="gameOverModeBadge"><i class="bx bx-time-five"></i> 1m Classic
+                Mode</span>
               <span class="final-score-label">Final Score</span>
               <span class="final-score-val" id="finalScoreVal">0</span>
             </div>
@@ -186,10 +294,33 @@
                 <span class="stat-pill-label">Accuracy</span>
                 <span class="stat-pill-val" id="accuracyVal">100%</span>
               </div>
+              <div class="stat-pill">
+                <span class="stat-pill-label">Mode Best</span>
+                <span class="stat-pill-val" id="modeBestVal">0</span>
+              </div>
             </div>
 
             <div class="new-high-score-banner" id="newHighScoreBanner" style="display: none;">
               🎉 New High Score!
+            </div>
+
+            <!-- Duration Selector on Game Over for quick next round -->
+            <div class="timer-select-section timer-select-compact">
+              <span class="timer-select-title"><i class="bx bx-timer"></i> Next Duration:</span>
+              <div class="timer-pill-grid timer-pill-grid-compact" role="radiogroup" aria-label="Next Game Duration">
+                <button type="button" class="timer-pill-btn pill-compact" data-duration="15">
+                  <span>15s</span>
+                </button>
+                <button type="button" class="timer-pill-btn pill-compact" data-duration="30">
+                  <span>30s</span>
+                </button>
+                <button type="button" class="timer-pill-btn pill-compact active" data-duration="60">
+                  <span>1m</span>
+                </button>
+                <button type="button" class="timer-pill-btn pill-compact" data-duration="120">
+                  <span>2m</span>
+                </button>
+              </div>
             </div>
 
             <div class="overlay-actions">
@@ -219,8 +350,11 @@
 
   </main>
 
+  <!-- Theme Manager Engine -->
+  <script src="../../js/theme-manager.js?v=1.1"></script>
+
   <!-- Cache-busted Script -->
-  <script src="script.js?v=3.0"></script>
+  <script src="script.js?v=3.1"></script>
 </body>
 
 </html>

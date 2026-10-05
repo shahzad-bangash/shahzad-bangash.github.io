@@ -38,6 +38,19 @@
       active: false
     };
 
+    let currentThemeParticleColors = (window.PortfolioTheme && window.PortfolioTheme.getCurrentThemeConfig().particleColors)
+      ? window.PortfolioTheme.getCurrentThemeConfig().particleColors
+      : ["56, 189, 248", "99, 102, 241"];
+
+    window.addEventListener("portfolio:themechange", function (e) {
+      if (e.detail && e.detail.theme && e.detail.theme.particleColors) {
+        currentThemeParticleColors = e.detail.theme.particleColors;
+        particles.forEach(function (p) {
+          p.baseColor = Math.random() > 0.4 ? currentThemeParticleColors[0] : currentThemeParticleColors[1];
+        });
+      }
+    });
+
     class Particle {
       constructor() {
         this.reset();
@@ -50,7 +63,7 @@
         this.vy = (Math.random() - 0.5) * 0.75;
         this.radius = Math.random() * 1.8 + 0.8;
         this.alpha = Math.random() * 0.5 + 0.3;
-        this.baseColor = Math.random() > 0.4 ? "56, 189, 248" : "99, 102, 241"; // Cyan or Indigo
+        this.baseColor = Math.random() > 0.4 ? currentThemeParticleColors[0] : currentThemeParticleColors[1];
       }
 
       update() {
@@ -103,7 +116,7 @@
           if (dist < connectionDistance) {
             const opacity = (1 - dist / connectionDistance) * 0.22;
             ctx.beginPath();
-            ctx.strokeStyle = `rgba(56, 189, 248, ${opacity})`;
+            ctx.strokeStyle = `rgba(${currentThemeParticleColors[0]}, ${opacity})`;
             ctx.lineWidth = 0.8;
             ctx.moveTo(particles[i].x, particles[i].y);
             ctx.lineTo(particles[j].x, particles[j].y);
@@ -119,7 +132,7 @@
           if (mdist < mouseRadius) {
             const mOpacity = (1 - mdist / mouseRadius) * 0.35;
             ctx.beginPath();
-            ctx.strokeStyle = `rgba(56, 189, 248, ${mOpacity})`;
+            ctx.strokeStyle = `rgba(${currentThemeParticleColors[0]}, ${mOpacity})`;
             ctx.lineWidth = 1;
             ctx.moveTo(particles[i].x, particles[i].y);
             ctx.lineTo(mouse.x, mouse.y);

@@ -383,7 +383,7 @@ body.home-active {
 }
 
 .hero-tagline strong {
-  color: #e2e8f0;
+  color: var(--text-primary);
   font-weight: 600;
 }
 
@@ -501,12 +501,24 @@ body.home-active {
   width: 100%;
 }
 
+/* Header Actions (Theme Switcher & Social Links) */
+.header-actions-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-top: 28px;
+}
+
+#header.header-top .header-actions-wrapper {
+  margin-top: 0 !important;
+}
+
 /* Social Links */
 .social-links {
   display: flex;
   align-items: center;
   gap: 12px;
-  margin-top: 28px;
+  margin-top: 0;
 }
 
 .social-link {

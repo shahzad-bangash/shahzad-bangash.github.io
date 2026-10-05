@@ -9,11 +9,67 @@
   "use strict";
 
   /* --------------------------------------------------------------------------
-     1. State Variables
+     1. State Variables & Duration Modes Configuration
      -------------------------------------------------------------------------- */
+  const DURATION_MODES = {
+    15: {
+      id: 15,
+      time: 15,
+      label: "15s",
+      name: "Blitz",
+      badge: "Arcade &bull; 15s",
+      icon: "bx bxs-zap",
+      warningAt: 5,
+      beepAt: 3,
+      desc: "High-speed reflex test! Match as many glowing target bubbles as you can before the 15-second blitz expires. Chain fast combos!"
+    },
+    30: {
+      id: 30,
+      time: 30,
+      label: "30s",
+      name: "Quick",
+      badge: "Arcade &bull; 30s",
+      icon: "bx bx-stopwatch",
+      warningAt: 8,
+      beepAt: 4,
+      desc: "Fast & focused! Match target numbers and stack your combo multiplier before the 30-second timer runs out."
+    },
+    60: {
+      id: 60,
+      time: 60,
+      label: "1m",
+      name: "Classic",
+      badge: "Arcade &bull; 1m",
+      icon: "bx bx-time-five",
+      warningAt: 10,
+      beepAt: 5,
+      desc: "The classic arcade reflex test! Match the glowing target number before the 1-minute timer expires. Maintain your multiplier combo bar!"
+    },
+    120: {
+      id: 120,
+      time: 120,
+      label: "2m",
+      name: "Endurance",
+      badge: "Arcade &bull; 2m",
+      icon: "bx bx-hourglass",
+      warningAt: 15,
+      beepAt: 5,
+      desc: "Test your stamina and sustained precision across a full 2-minute endurance session. Can you hold your streak to the end?"
+    }
+  };
+
+  let selectedDuration = 60;
+  try {
+    const savedDuration = localStorage.getItem("bubble_game_selected_duration");
+    const parsed = parseInt(savedDuration, 10);
+    if (parsed && DURATION_MODES[parsed]) {
+      selectedDuration = parsed;
+    }
+  } catch (e) {}
+
   let ranHit = 0;
   let score = 0;
-  let timer = 60;
+  let timer = selectedDuration;
   let timerInterval = null;
   let isGameActive = false;
   let soundMuted = false;
@@ -27,13 +83,29 @@
   let comboTimeRemaining = 0;
   let comboInterval = null;
 
-  let highScore = 0;
-  try {
-    const saved = localStorage.getItem("bubble_game_high_score");
-    if (saved) highScore = parseInt(saved, 10) || 0;
-  } catch (e) {
-    console.warn("Storage unavailable", e);
+  // Per-duration High Score Helpers
+  function getHighScoreFor(duration) {
+    try {
+      const val = localStorage.getItem(`bubble_game_high_score_${duration}`);
+      if (val !== null) return parseInt(val, 10) || 0;
+      if (duration === 60) {
+        const legacy = localStorage.getItem("bubble_game_high_score");
+        if (legacy !== null) return parseInt(legacy, 10) || 0;
+      }
+    } catch (e) {}
+    return 0;
   }
+
+  function setHighScoreFor(duration, val) {
+    try {
+      localStorage.setItem(`bubble_game_high_score_${duration}`, val);
+      if (duration === 60) {
+        localStorage.setItem("bubble_game_high_score", val);
+      }
+    } catch (e) {}
+  }
+
+  let highScore = getHighScoreFor(selectedDuration);
 
   // Sound preference
   try {
@@ -50,8 +122,17 @@
   const highScoreValElem = document.getElementById("highScoreVal");
   const bubbleGridElem = document.getElementById("bubbleGrid");
 
+  const speedBadge = document.getElementById("speedBadge");
+  const badgeSpeedText = document.getElementById("badgeSpeedText");
+  const timerPopover = document.getElementById("timerPopover");
+
   const startScreen = document.getElementById("startScreen");
+  const startScreenDesc = document.getElementById("startScreenDesc");
+  const startScreenBestBadge = document.getElementById("startScreenBestBadge");
   const gameOverScreen = document.getElementById("gameOverScreen");
+  const gameOverModeBadge = document.getElementById("gameOverModeBadge");
+  const modeBestVal = document.getElementById("modeBestVal");
+
   const startBtn = document.getElementById("startBtn");
   const playAgainBtn = document.getElementById("playAgainBtn");
   const resetScoreBtn = document.getElementById("resetScoreBtn");
@@ -201,9 +282,9 @@
   });
 
   /* --------------------------------------------------------------------------
-     4. Modern Curated Color Palettes (Rich HSL Gradients)
+     4. Modern Curated Color Palettes (Theme-driven HSL Gradients)
      -------------------------------------------------------------------------- */
-  const modernBubbleHues = [
+  const defaultBubbleHues = [
     { bg: "linear-gradient(135deg, #06b6d4, #2563eb)", glow: "rgba(6, 182, 212, 0.4)" },
     { bg: "linear-gradient(135deg, #3b82f6, #6366f1)", glow: "rgba(59, 130, 246, 0.4)" },
     { bg: "linear-gradient(135deg, #8b5cf6, #d946ef)", glow: "rgba(139, 92, 246, 0.4)" },
@@ -212,6 +293,26 @@
     { bg: "linear-gradient(135deg, #f59e0b, #ea580c)", glow: "rgba(245, 158, 11, 0.4)" },
     { bg: "linear-gradient(135deg, #14b8a6, #0284c7)", glow: "rgba(20, 184, 166, 0.4)" }
   ];
+
+  let activeThemeBubbleHues = (window.PortfolioTheme && window.PortfolioTheme.getCurrentThemeConfig().bubbleHues)
+    ? window.PortfolioTheme.getCurrentThemeConfig().bubbleHues
+    : [];
+
+  let modernBubbleHues = activeThemeBubbleHues.length ? activeThemeBubbleHues : defaultBubbleHues;
+
+  window.addEventListener("portfolio:themechange", function (e) {
+    if (e.detail && e.detail.theme) {
+      if (e.detail.theme.bubbleHues && e.detail.theme.bubbleHues.length) {
+        modernBubbleHues = e.detail.theme.bubbleHues;
+      } else {
+        modernBubbleHues = defaultBubbleHues;
+      }
+      currentPaletteIndex = 0;
+      if (isGameActive) {
+        makeBubbles();
+      }
+    }
+  });
 
   let currentPaletteIndex = 0;
 
@@ -391,13 +492,10 @@
     const streakBonus = currentStreak >= 5 ? 25 : currentStreak >= 3 ? 15 : 10;
     score += streakBonus;
 
-    let isNewHigh = false;
-    if (score > highScore) {
-      highScore = score;
-      isNewHigh = true;
-      try {
-        localStorage.setItem("bubble_game_high_score", highScore);
-      } catch (e) {}
+    // High score check per duration mode
+    const currentModeHigh = getHighScoreFor(selectedDuration);
+    if (score > currentModeHigh) {
+      setHighScoreFor(selectedDuration, score);
     }
 
     updateScoreDisplay();
@@ -448,18 +546,135 @@
   });
 
   /* --------------------------------------------------------------------------
-     7. Game Timer & Lifecycle
+     7. Duration Modes & Timer Controls
+     -------------------------------------------------------------------------- */
+  function setDuration(duration, shouldRestartIfActive = false) {
+    const parsed = parseInt(duration, 10);
+    if (!DURATION_MODES[parsed]) return;
+
+    selectedDuration = parsed;
+    try {
+      localStorage.setItem("bubble_game_selected_duration", selectedDuration);
+    } catch (e) {}
+
+    playTone(540, "sine", 0.05, 0, 0.08);
+
+    updateAllDurationUI();
+
+    if (isGameActive && shouldRestartIfActive) {
+      restartGame();
+    } else if (!isGameActive) {
+      timer = selectedDuration;
+      timerValElem.textContent = timer;
+      timerValElem.classList.remove("warning");
+    }
+  }
+
+  function updateAllDurationUI() {
+    const config = DURATION_MODES[selectedDuration] || DURATION_MODES[60];
+
+    // Header badge
+    if (badgeSpeedText) {
+      badgeSpeedText.innerHTML = config.badge;
+    }
+    if (speedBadge) {
+      speedBadge.setAttribute(
+        "aria-label",
+        `Game Duration: ${config.label} ${config.name}`
+      );
+    }
+
+    // Modal duration buttons (Start Screen & Game Over Screen)
+    const allPillBtns = document.querySelectorAll(".timer-pill-btn");
+    allPillBtns.forEach((btn) => {
+      const d = parseInt(btn.getAttribute("data-duration"), 10);
+      const isActive = d === selectedDuration;
+      btn.classList.toggle("active", isActive);
+      btn.setAttribute("aria-checked", isActive ? "true" : "false");
+    });
+
+    // Popover items
+    const allPopoverItems = document.querySelectorAll(".popover-item");
+    allPopoverItems.forEach((item) => {
+      const d = parseInt(item.getAttribute("data-duration"), 10);
+      item.classList.toggle("active", d === selectedDuration);
+    });
+
+    // Popover high score values
+    Object.keys(DURATION_MODES).forEach((durKey) => {
+      const bestEl = document.getElementById(`popBest${durKey}`);
+      if (bestEl) {
+        bestEl.textContent = `Best: ${getHighScoreFor(parseInt(durKey, 10))}`;
+      }
+    });
+
+    // Start Screen Description & Mode High Score
+    if (startScreenDesc) {
+      startScreenDesc.textContent = config.desc;
+    }
+    if (startScreenBestBadge) {
+      startScreenBestBadge.textContent = `Best: ${getHighScoreFor(selectedDuration)}`;
+    }
+
+    // Sidebar Best score & Timer display
+    updateScoreDisplay();
+
+    // Game Over screen mode badge & best
+    if (gameOverModeBadge) {
+      gameOverModeBadge.innerHTML = `<i class="${config.icon}"></i> ${config.label} ${config.name} Mode`;
+    }
+    if (modeBestVal) {
+      modeBestVal.textContent = getHighScoreFor(selectedDuration);
+    }
+  }
+
+  function openPopover() {
+    if (!timerPopover) return;
+    updateAllDurationUI();
+    timerPopover.style.display = "flex";
+    if (speedBadge) {
+      speedBadge.classList.add("open");
+      speedBadge.setAttribute("aria-expanded", "true");
+    }
+  }
+
+  function closePopover() {
+    if (!timerPopover) return;
+    timerPopover.style.display = "none";
+    if (speedBadge) {
+      speedBadge.classList.remove("open");
+      speedBadge.setAttribute("aria-expanded", "false");
+    }
+  }
+
+  function togglePopover(e) {
+    if (e) e.stopPropagation();
+    if (!timerPopover) return;
+    const isHidden = timerPopover.style.display === "none" || !timerPopover.style.display;
+    if (isHidden) {
+      openPopover();
+    } else {
+      closePopover();
+    }
+  }
+
+  /* --------------------------------------------------------------------------
+     8. Game Timer & Lifecycle
      -------------------------------------------------------------------------- */
   function startTimer() {
     clearInterval(timerInterval);
+    const config = DURATION_MODES[selectedDuration] || DURATION_MODES[60];
+    const warnThreshold = config.warningAt;
+    const beepThreshold = config.beepAt;
+
     timerInterval = setInterval(() => {
       if (timer > 0) {
         timer -= 1;
         timerValElem.textContent = timer;
 
-        if (timer <= 10) {
+        if (timer <= warnThreshold) {
           timerValElem.classList.add("warning");
-          if (timer <= 5 && timer > 0) {
+          if (timer <= beepThreshold && timer > 0) {
             playTone(600, "sine", 0.05, 0, 0.08);
           }
         } else {
@@ -476,7 +691,7 @@
     getAudioContext();
     isGameActive = true;
     score = 0;
-    timer = 60;
+    timer = selectedDuration;
     currentStreak = 0;
     maxStreak = 0;
     totalHits = 0;
@@ -491,6 +706,7 @@
 
     startScreen.style.display = "none";
     gameOverScreen.style.display = "none";
+    closePopover();
     resetMultiplierUI();
 
     startTimer();
@@ -507,13 +723,25 @@
     const accuracy = totalHits > 0 ? Math.round((correctHits / totalHits) * 100) : 0;
     accuracyValElem.textContent = `${accuracy}%`;
 
-    const isHigh = score >= highScore && score > 0;
+    const currentModeHigh = getHighScoreFor(selectedDuration);
+    const config = DURATION_MODES[selectedDuration] || DURATION_MODES[60];
+
+    if (gameOverModeBadge) {
+      gameOverModeBadge.innerHTML = `<i class="${config.icon}"></i> ${config.label} ${config.name} Mode`;
+    }
+    if (modeBestVal) {
+      modeBestVal.textContent = currentModeHigh;
+    }
+
+    const isHigh = score >= currentModeHigh && score > 0;
     if (isHigh) {
+      newHighScoreBanner.textContent = `🎉 New ${config.label} High Score!`;
       newHighScoreBanner.style.display = "block";
     } else {
       newHighScoreBanner.style.display = "none";
     }
 
+    updateAllDurationUI();
     playGameOverFanfare(isHigh);
     gameOverScreen.style.display = "flex";
   }
@@ -525,12 +753,13 @@
   }
 
   function resetHighScore() {
-    highScore = 0;
-    try {
-      localStorage.removeItem("bubble_game_high_score");
-    } catch (e) {}
+    setHighScoreFor(selectedDuration, 0);
     updateScoreDisplay();
+    updateAllDurationUI();
     newHighScoreBanner.style.display = "none";
+    if (modeBestVal) {
+      modeBestVal.textContent = "0";
+    }
   }
 
   /* --------------------------------------------------------------------------
@@ -549,6 +778,19 @@
     const count = width < 768 ? 35 : 65;
     const connectionDist = width < 768 ? 95 : 120;
 
+    let currentThemeParticleColors = (window.PortfolioTheme && window.PortfolioTheme.getCurrentThemeConfig().particleColors)
+      ? window.PortfolioTheme.getCurrentThemeConfig().particleColors
+      : ["56, 189, 248", "99, 102, 241"];
+
+    window.addEventListener("portfolio:themechange", function (e) {
+      if (e.detail && e.detail.theme && e.detail.theme.particleColors) {
+        currentThemeParticleColors = e.detail.theme.particleColors;
+        particles.forEach(function (p) {
+          p.color = Math.random() > 0.4 ? currentThemeParticleColors[0] : currentThemeParticleColors[1];
+        });
+      }
+    });
+
     class Particle {
       constructor() {
         this.reset();
@@ -560,7 +802,7 @@
         this.vy = (Math.random() - 0.5) * 0.7;
         this.radius = Math.random() * 1.5 + 0.8;
         this.alpha = Math.random() * 0.5 + 0.25;
-        this.color = Math.random() > 0.4 ? "56, 189, 248" : "99, 102, 241";
+        this.color = Math.random() > 0.4 ? currentThemeParticleColors[0] : currentThemeParticleColors[1];
       }
       update() {
         this.x += this.vx;
@@ -597,7 +839,7 @@
             ctx.beginPath();
             ctx.moveTo(particles[i].x, particles[i].y);
             ctx.lineTo(particles[j].x, particles[j].y);
-            ctx.strokeStyle = `rgba(56, 189, 248, ${lineAlpha})`;
+            ctx.strokeStyle = `rgba(${currentThemeParticleColors[0]}, ${lineAlpha})`;
             ctx.lineWidth = 0.8;
             ctx.stroke();
           }
@@ -628,6 +870,47 @@
   resetScoreBtn.addEventListener("click", resetHighScore);
   restartBtn.addEventListener("click", restartGame);
 
+  // Speed Badge & Popover Toggle
+  if (speedBadge) {
+    speedBadge.addEventListener("click", togglePopover);
+  }
+
+  // Delegated clicks for timer pills, popover items, and outside clicks
+  document.addEventListener("click", (e) => {
+    // Duration pill click (Start Screen or Game Over Screen)
+    const pillBtn = e.target.closest(".timer-pill-btn");
+    if (pillBtn) {
+      const dur = parseInt(pillBtn.getAttribute("data-duration"), 10);
+      if (dur) setDuration(dur, false);
+      return;
+    }
+
+    // Popover option click
+    const popItem = e.target.closest(".popover-item");
+    if (popItem) {
+      const dur = parseInt(popItem.getAttribute("data-duration"), 10);
+      if (dur) {
+        setDuration(dur, true); // if game is active, restarts with new duration
+        closePopover();
+      }
+      return;
+    }
+
+    // Close popover if clicked outside
+    if (timerPopover && timerPopover.style.display !== "none") {
+      if (!timerPopover.contains(e.target) && !speedBadge.contains(e.target)) {
+        closePopover();
+      }
+    }
+  });
+
+  // ESC key to close popover
+  document.addEventListener("keydown", (e) => {
+    if (e.key === "Escape") {
+      closePopover();
+    }
+  });
+
   // Resize handler
   let resizeTimeout;
   window.addEventListener("resize", () => {
@@ -642,7 +925,7 @@
   // Initialize on load
   document.addEventListener("DOMContentLoaded", () => {
     initParticleCanvas();
-    updateScoreDisplay();
+    updateAllDurationUI();
     updateSoundUI();
   });
 })();
