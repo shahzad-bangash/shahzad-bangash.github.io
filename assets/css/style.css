@@ -370,6 +370,10 @@ body.home-active {
   letter-spacing: -0.03em;
 }
 
+.hero-greeting {
+  display: inline;
+}
+
 .hero-subtitle {
   font-size: clamp(1.2rem, 2.8vw, 1.85rem);
   font-weight: 500;
@@ -1608,6 +1612,16 @@ section.section-show {
     text-align: center;
   }
 
+  .hero-greeting {
+    display: block;
+    white-space: nowrap;
+  }
+
+  .hero-name-highlight {
+    display: block;
+    white-space: nowrap;
+  }
+
   .hero-subtitle {
     justify-content: center;
   }
@@ -1676,7 +1690,7 @@ section.section-show {
   }
 
   .hero-title {
-    font-size: 2.2rem;
+    font-size: clamp(1.85rem, 8.5vw, 2.2rem);
   }
 
   .hero-subtitle {
