@@ -101,7 +101,7 @@
   --text-primary: #0f172a;
   --text-secondary: #334155;
   --text-light: #0f172a;
-  --text-muted: #64748b;
+  --text-muted: #475569;
   --text-gradient: linear-gradient(135deg, #0f172a 20%, #0284c7 70%, #4f46e5 100%);
   --hero-name-color: #0284c7;
 
@@ -580,16 +580,16 @@
 
 :is([data-theme="light-blue"], [data-theme="clean-light"]) .difficulty-badge,
 :is([data-theme="light-blue"], [data-theme="clean-light"]) .back-link,
-:is([data-theme="light-blue"], [data-theme="clean-light"]) .icon-toggle-btn,
-:is([data-theme="light-blue"], [data-theme="clean-light"]) .sound-toggle-btn {
+:is([data-theme="light-blue"], [data-theme="clean-light"]) .icon-toggle-btn:not(.muted),
+:is([data-theme="light-blue"], [data-theme="clean-light"]) .sound-toggle-btn:not(.muted) {
   background: rgba(255, 255, 255, 0.95);
   border-color: rgba(15, 23, 42, 0.14);
   color: #334155;
 }
 
 :is([data-theme="light-blue"], [data-theme="clean-light"]) .back-link:hover,
-:is([data-theme="light-blue"], [data-theme="clean-light"]) .icon-toggle-btn:hover,
-:is([data-theme="light-blue"], [data-theme="clean-light"]) .sound-toggle-btn:hover {
+:is([data-theme="light-blue"], [data-theme="clean-light"]) .icon-toggle-btn:hover:not(.muted),
+:is([data-theme="light-blue"], [data-theme="clean-light"]) .sound-toggle-btn:hover:not(.muted) {
   background: rgba(2, 132, 199, 0.08);
   border-color: var(--accent-cyan);
   color: var(--accent-cyan);
@@ -859,6 +859,254 @@
 
 :is([data-theme="light-blue"], [data-theme="clean-light"]) .pill-duration {
   color: #0f172a;
+}
+
+/* Portfolio Light Mode Typography & Component Refinements */
+:is([data-theme="light-blue"], [data-theme="clean-light"]) .section-badge {
+  color: #0284c7 !important;
+  background: rgba(2, 132, 199, 0.08) !important;
+  border-color: rgba(2, 132, 199, 0.25) !important;
+  font-weight: 700 !important;
+}
+
+:is([data-theme="light-blue"], [data-theme="clean-light"]) .section-title h2 {
+  color: #0f172a !important;
+}
+
+:is([data-theme="light-blue"], [data-theme="clean-light"]) .section-subtitle {
+  color: #334155 !important;
+}
+
+:is([data-theme="light-blue"], [data-theme="clean-light"]) .project-title {
+  color: #0f172a !important;
+}
+
+:is([data-theme="light-blue"], [data-theme="clean-light"]) .project-description {
+  color: #334155 !important;
+}
+
+:is([data-theme="light-blue"], [data-theme="clean-light"]) .tech-tag {
+  color: #0369a1 !important;
+  background: #f0f9ff !important;
+  border-color: #bae6fd !important;
+  font-weight: 600 !important;
+}
+
+:is([data-theme="light-blue"], [data-theme="clean-light"]) .tech-tag:hover {
+  color: #0284c7 !important;
+  background: #e0f2fe !important;
+  border-color: #7dd3fc !important;
+}
+
+:is([data-theme="light-blue"], [data-theme="clean-light"]) .about-heading {
+  color: #0f172a !important;
+}
+
+:is([data-theme="light-blue"], [data-theme="clean-light"]) .about-role-tag {
+  color: #0284c7 !important;
+  font-weight: 600 !important;
+}
+
+:is([data-theme="light-blue"], [data-theme="clean-light"]) .about-body p {
+  color: #334155 !important;
+}
+
+:is([data-theme="light-blue"], [data-theme="clean-light"]) .metric-item {
+  background: #f8fafc !important;
+  border-color: rgba(15, 23, 42, 0.1) !important;
+}
+
+:is([data-theme="light-blue"], [data-theme="clean-light"]) .metric-number {
+  color: #0284c7 !important;
+}
+
+:is([data-theme="light-blue"], [data-theme="clean-light"]) .metric-label {
+  color: #475569 !important;
+  font-weight: 600 !important;
+}
+
+:is([data-theme="light-blue"], [data-theme="clean-light"]) .contact-item {
+  background: #f8fafc !important;
+  border-color: rgba(15, 23, 42, 0.1) !important;
+}
+
+:is([data-theme="light-blue"], [data-theme="clean-light"]) .contact-label {
+  color: #475569 !important;
+  font-weight: 600 !important;
+}
+
+:is([data-theme="light-blue"], [data-theme="clean-light"]) .contact-value {
+  color: #0f172a !important;
+  font-weight: 600 !important;
+}
+
+:is([data-theme="light-blue"], [data-theme="clean-light"]) .contact-value:hover {
+  color: #0284c7 !important;
+}
+
+:is([data-theme="light-blue"], [data-theme="clean-light"]) .btn-copy-email {
+  background: #f1f5f9 !important;
+  border: 1px solid rgba(15, 23, 42, 0.14) !important;
+  color: #1e293b !important;
+  font-weight: 600 !important;
+}
+
+:is([data-theme="light-blue"], [data-theme="clean-light"]) .btn-copy-email:hover {
+  background: #e2e8f0 !important;
+  border-color: #0284c7 !important;
+  color: #0284c7 !important;
+}
+
+:is([data-theme="light-blue"], [data-theme="clean-light"]) .btn-copy-email.copied {
+  background: #ecfdf5 !important;
+  border-color: #10b981 !important;
+  color: #047857 !important;
+  font-weight: 700 !important;
+}
+
+:is([data-theme="light-blue"], [data-theme="clean-light"]) .skills-showcase-title {
+  color: #0f172a !important;
+}
+
+:is([data-theme="light-blue"], [data-theme="clean-light"]) .skill-category-card {
+  background: #ffffff !important;
+  border-color: rgba(15, 23, 42, 0.12) !important;
+  box-shadow: 0 4px 20px rgba(15, 23, 42, 0.06) !important;
+}
+
+:is([data-theme="light-blue"], [data-theme="clean-light"]) .skill-category-card h3 {
+  color: #0f172a !important;
+}
+
+:is([data-theme="light-blue"], [data-theme="clean-light"]) .skill-chip {
+  background: #f1f5f9 !important;
+  border-color: rgba(15, 23, 42, 0.12) !important;
+  color: #1e293b !important;
+  font-weight: 500 !important;
+}
+
+:is([data-theme="light-blue"], [data-theme="clean-light"]) .skill-chip:hover {
+  color: #0284c7 !important;
+  background: #e0f2fe !important;
+  border-color: #0284c7 !important;
+}
+
+/* 2048 Arcade Light Mode Refinements */
+:is([data-theme="light-blue"], [data-theme="clean-light"]) .game-title {
+  background: linear-gradient(135deg, #0f172a 30%, #0284c7 100%) !important;
+  -webkit-background-clip: text !important;
+  -webkit-text-fill-color: transparent !important;
+}
+
+:is([data-theme="light-blue"], [data-theme="clean-light"]) .game-subtitle {
+  color: #0284c7 !important;
+  font-weight: 700 !important;
+  opacity: 1 !important;
+}
+
+:is([data-theme="light-blue"], [data-theme="clean-light"]) .target-showcase-card .stat-label,
+:is([data-theme="light-blue"], [data-theme="clean-light"]) .sidebar-guide-card .guide-title {
+  color: #0284c7 !important;
+  font-weight: 700 !important;
+}
+
+:is([data-theme="light-blue"], [data-theme="clean-light"]) .target-hint {
+  color: #475569 !important;
+  font-weight: 600 !important;
+}
+
+:is([data-theme="light-blue"], [data-theme="clean-light"]) .sidebar-stats-grid .stat-label {
+  color: #475569 !important;
+  font-weight: 700 !important;
+}
+
+:is([data-theme="light-blue"], [data-theme="clean-light"]) .sidebar-stat-box .score-val {
+  color: #0284c7 !important;
+}
+
+:is([data-theme="light-blue"], [data-theme="clean-light"]) .sidebar-stat-box .high-val {
+  color: #059669 !important;
+}
+
+:is([data-theme="light-blue"], [data-theme="clean-light"]) .sidebar-stat-box .moves-val {
+  color: #4f46e5 !important;
+}
+
+:is([data-theme="light-blue"], [data-theme="clean-light"]) .sidebar-actions-grid .btn-primary,
+:is([data-theme="light-blue"], [data-theme="clean-light"]) #btnNewGame {
+  background: linear-gradient(135deg, #0284c7 0%, #2563eb 100%) !important;
+  color: #ffffff !important;
+  font-weight: 600 !important;
+  box-shadow: 0 4px 14px rgba(2, 132, 199, 0.35) !important;
+}
+
+:is([data-theme="light-blue"], [data-theme="clean-light"]) .sidebar-actions-grid .btn-primary:hover:not(:disabled),
+:is([data-theme="light-blue"], [data-theme="clean-light"]) #btnNewGame:hover:not(:disabled) {
+  background: linear-gradient(135deg, #0369a1 0%, #1d4ed8 100%) !important;
+  color: #ffffff !important;
+}
+
+:is([data-theme="light-blue"], [data-theme="clean-light"]) .sidebar-actions-grid .btn-secondary,
+:is([data-theme="light-blue"], [data-theme="clean-light"]) #btnUndo {
+  background: #f1f5f9 !important;
+  border-color: rgba(15, 23, 42, 0.15) !important;
+  color: #1e293b !important;
+  font-weight: 600 !important;
+}
+
+:is([data-theme="light-blue"], [data-theme="clean-light"]) .sidebar-actions-grid .btn-secondary:hover:not(:disabled),
+:is([data-theme="light-blue"], [data-theme="clean-light"]) #btnUndo:hover:not(:disabled) {
+  background: #e2e8f0 !important;
+  border-color: #0284c7 !important;
+  color: #0284c7 !important;
+}
+
+:is([data-theme="light-blue"], [data-theme="clean-light"]) .sidebar-guide-card {
+  background: #ffffff !important;
+  border-color: rgba(15, 23, 42, 0.1) !important;
+  color: #334155 !important;
+}
+
+:is([data-theme="light-blue"], [data-theme="clean-light"]) .guide-row {
+  color: #334155 !important;
+}
+
+:is([data-theme="light-blue"], [data-theme="clean-light"]) .guide-desc {
+  color: #334155 !important;
+  font-weight: 500 !important;
+}
+
+:is([data-theme="light-blue"], [data-theme="clean-light"]) .guide-keys kbd {
+  background: #f1f5f9 !important;
+  border-color: rgba(15, 23, 42, 0.15) !important;
+  color: #0f172a !important;
+  font-weight: 600 !important;
+}
+
+:is([data-theme="light-blue"], [data-theme="clean-light"]) .grid-overlay {
+  background: rgba(248, 250, 252, 0.92) !important;
+}
+
+:is([data-theme="light-blue"], [data-theme="clean-light"]) .overlay-title {
+  color: #0f172a !important;
+}
+
+:is([data-theme="light-blue"], [data-theme="clean-light"]) .overlay-msg {
+  color: #334155 !important;
+}
+
+:is([data-theme="light-blue"], [data-theme="clean-light"]) .overlay-stat {
+  background: #ffffff !important;
+  border-color: rgba(15, 23, 42, 0.12) !important;
+}
+
+:is([data-theme="light-blue"], [data-theme="clean-light"]) .overlay-stat .stat-lbl {
+  color: #475569 !important;
+  font-weight: 600 !important;
+}
+
+:is([data-theme="light-blue"], [data-theme="clean-light"]) .overlay-stat .stat-num {
+  color: #0284c7 !important;
 }
 
 /* --------------------------------------------------------------------------
@@ -1150,5 +1398,38 @@ body,
 
 .mobile-theme-title i {
   color: var(--accent-cyan);
+}
+
+/* --------------------------------------------------------------------------
+   5. Universal Silent / Muted Sound Toggle (Red Accent) across all games
+   -------------------------------------------------------------------------- */
+.icon-toggle-btn.muted,
+.sound-toggle-btn.muted {
+  color: #f43f5e !important;
+  border-color: rgba(244, 63, 94, 0.45) !important;
+  background: rgba(244, 63, 94, 0.1) !important;
+}
+
+.icon-toggle-btn.muted:hover,
+.sound-toggle-btn.muted:hover {
+  color: #fb7185 !important;
+  border-color: #f43f5e !important;
+  background: rgba(244, 63, 94, 0.2) !important;
+  box-shadow: 0 0 14px rgba(244, 63, 94, 0.35) !important;
+}
+
+:is([data-theme="light-blue"], [data-theme="clean-light"]) .icon-toggle-btn.muted,
+:is([data-theme="light-blue"], [data-theme="clean-light"]) .sound-toggle-btn.muted {
+  color: #e11d48 !important;
+  border-color: rgba(225, 29, 72, 0.45) !important;
+  background: rgba(225, 29, 72, 0.08) !important;
+}
+
+:is([data-theme="light-blue"], [data-theme="clean-light"]) .icon-toggle-btn.muted:hover,
+:is([data-theme="light-blue"], [data-theme="clean-light"]) .sound-toggle-btn.muted:hover {
+  color: #be123c !important;
+  border-color: #e11d48 !important;
+  background: rgba(225, 29, 72, 0.15) !important;
+  box-shadow: 0 0 12px rgba(225, 29, 72, 0.25) !important;
 }
 

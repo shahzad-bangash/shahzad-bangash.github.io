@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
+  <meta name="theme-color" content="#030712">
+  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+  <meta http-equiv="Pragma" content="no-cache">
+  <meta http-equiv="Expires" content="0">
+
+  <title>2048 Puzzle Game | Modern Arcade - Shahzad Bangash</title>
+  <meta name="description"
+    content="Play modern 2048 puzzle game with dynamic theme engine, move undo, high scores, audio feedback, and responsive glassmorphic aesthetic by Shahzad Bangash.">
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/x-icon" href="../../../favicon.ico">
+  <link rel="icon" type="image/png" href="../../../favicon.png">
+  <link rel="apple-touch-icon" href="../../../favicon.png">
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;500;600;700;800&family=Poppins:wght@400;500;600;700&display=swap"
+    rel="stylesheet">
+
+  <!-- Boxicons & Font Awesome -->
+  <link href="../../vendor/boxicons/css/boxicons.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+  <!-- Main Game Stylesheet -->
+  <link rel="stylesheet" href="style.css?v=3.5">
+  <!-- Unified Theme Engine Stylesheet -->
+  <link rel="stylesheet" href="../../css/themes.css?v=1.5">
+
+  <!-- Instant Theme Attribute Setup (Avoid FOUT) -->
+  <script>
+    (function () {
+      try {
+        var saved = localStorage.getItem("shahzad_portfolio_theme");
+        var params = new URLSearchParams(window.location.search);
+        var t = saved || params.get("theme") || "dark-blue";
+        if (t === "cyber-dark" || t === "cyber-void") t = "dark-blue";
+        if (t === "clean-light") t = "light-blue";
+        if (t === "emerald-green" || t === "emerald-matrix") t = "green";
+        if (t === "neon-purple" || t === "neon-sakura") t = "purple";
+        if (t === "arctic-blue" || t === "arctic-frost") t = "red";
+        document.documentElement.setAttribute("data-theme", t);
+      } catch (e) {}
+    })();
+  </script>
+</head>
+
+<body>
+
+  <!-- Ambient Dynamic Background Canvas -->
+  <canvas id="bg-canvas" aria-hidden="true"></canvas>
+
+  <!-- Ambient Glow Orbs -->
+  <div class="bg-glow-orb bg-glow-orb-1" aria-hidden="true"></div>
+  <div class="bg-glow-orb bg-glow-orb-2" aria-hidden="true"></div>
+  <div class="bg-glow-orb bg-glow-orb-3" aria-hidden="true"></div>
+
+  <!-- Main Game Container -->
+  <main id="wrapper">
+
+    <!-- Top Navigation / Back to Portfolio -->
+    <header class="game-header">
+      <a href="../../../index.html#projects" class="back-link" id="backToPortfolio" aria-label="Back to Portfolio">
+        <i class="bx bx-arrow-back"></i>
+        <span>Portfolio</span>
+      </a>
+
+      <!-- Header Center Group (Mode Badge + Quick Restart Action) -->
+      <div class="header-center-group">
+        <div class="difficulty-badge" id="difficultyBadge">
+          <span class="pulse-dot"></span>
+          <span id="badgeText">Arcade &bull; 2048</span>
+        </div>
+        <button class="icon-toggle-btn header-restart-btn" id="headerRestartBtn" aria-label="Restart Game" title="Restart Game">
+          <i class="bx bx-refresh"></i>
+        </button>
+      </div>
+
+      <!-- Action Controls (Theme Switcher + GitHub + Sound Toggle) -->
+      <div class="header-actions">
+        <div class="theme-switcher-wrapper" data-align="right">
+          <button type="button" class="theme-trigger-btn" title="Click to switch theme" aria-label="Switch Theme">
+            <i class="bx bx-palette theme-palette-icon"></i>
+          </button>
+        </div>
+        <a href="https://github.com/shahzad-bangash/2048-game" target="_blank" class="icon-toggle-btn github-btn" aria-label="GitHub Repository" title="View Source on GitHub">
+          <i class="bx bxl-github"></i>
+        </a>
+        <button class="icon-toggle-btn" id="soundToggleBtn" aria-label="Toggle Sound" title="Toggle Sound">
+          <i class="bx bx-volume-full" id="soundIcon"></i>
+        </button>
+      </div>
+    </header>
+
+    <!-- Glassmorphic Card (Sidebar + Playfield Container) -->
+    <section class="game-card">
+
+      <!-- Left Status Sidebar (Matches Bubble Pop Architecture) -->
+      <aside class="game-sidebar" id="gameSidebar" aria-label="Game Status and Controls">
+
+        <div class="sidebar-header">
+          <h1 class="game-title">2048</h1>
+          <span class="game-subtitle">Arcade Puzzle</span>
+        </div>
+
+        <div class="sidebar-main-content">
+          <!-- Target Tile Showcase Card -->
+          <div class="sidebar-card target-showcase-card">
+            <span class="stat-label">Goal Tile</span>
+            <div class="target-tile-wrap">
+              <div class="target-tile-badge">2048</div>
+            </div>
+            <span class="target-hint">Join tiles to win!</span>
+          </div>
+
+          <!-- Stats Grid (Score, Best, Moves) -->
+          <div class="sidebar-stats-grid">
+            <!-- Score -->
+            <div class="sidebar-stat-box score-box">
+              <div class="stat-header">
+                <i class="bx bx-target-lock"></i>
+                <span class="stat-label">Score</span>
+              </div>
+              <span class="stat-val score-val" id="scoreVal">0</span>
+            </div>
+
+            <!-- Best Score -->
+            <div class="sidebar-stat-box high-box">
+              <div class="stat-header">
+                <i class="bx bx-crown"></i>
+                <span class="stat-label">Best</span>
+              </div>
+              <span class="stat-val high-val" id="bestScoreVal">0</span>
+            </div>
+
+            <!-- Moves (Full-width row) -->
+            <div class="sidebar-stat-box moves-box">
+              <div class="stat-header">
+                <i class="bx bx-transfer-alt"></i>
+                <span class="stat-label">Moves</span>
+              </div>
+              <span class="stat-val moves-val" id="movesVal">0</span>
+            </div>
+          </div>
+
+          <!-- Sidebar Actions Toolbar -->
+          <div class="sidebar-actions-grid">
+            <button id="btnUndo" class="btn-action btn-secondary" title="Undo last move (U or Z)" disabled>
+              <i class="bx bx-undo"></i>
+              <span>Undo</span>
+            </button>
+            <button id="btnNewGame" class="btn-action btn-primary" title="Start a fresh game (R)">
+              <i class="bx bx-refresh"></i>
+              <span>New Game</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Keyboard Guide Card in Sidebar -->
+        <div class="sidebar-guide-card">
+          <div class="guide-title"><i class="bx bx-joystick"></i> Controls</div>
+          <div class="guide-row">
+            <span class="guide-keys"><kbd>&uarr;&darr;&larr;&rarr;</kbd> / <kbd>WASD</kbd></span>
+            <span class="guide-desc">Slide</span>
+          </div>
+          <div class="guide-row">
+            <span class="guide-keys"><kbd>U</kbd></span>
+            <span class="guide-desc">Undo</span>
+          </div>
+          <div class="guide-row">
+            <span class="guide-keys"><kbd>R</kbd></span>
+            <span class="guide-desc">Restart</span>
+          </div>
+        </div>
+
+      </aside>
+
+      <!-- Right Playfield Container -->
+      <div class="playfield-container">
+        <!-- 4x4 Grid Board Wrapper -->
+        <div class="board-wrapper">
+          <div class="grid-board" id="gridBoard" role="grid" aria-label="2048 Puzzle Board">
+            <!-- 16 Dynamic Grid Cell Slots -->
+            <div class="board-cell" data-idx="0"></div>
+            <div class="board-cell" data-idx="1"></div>
+            <div class="board-cell" data-idx="2"></div>
+            <div class="board-cell" data-idx="3"></div>
+            <div class="board-cell" data-idx="4"></div>
+            <div class="board-cell" data-idx="5"></div>
+            <div class="board-cell" data-idx="6"></div>
+            <div class="board-cell" data-idx="7"></div>
+            <div class="board-cell" data-idx="8"></div>
+            <div class="board-cell" data-idx="9"></div>
+            <div class="board-cell" data-idx="10"></div>
+            <div class="board-cell" data-idx="11"></div>
+            <div class="board-cell" data-idx="12"></div>
+            <div class="board-cell" data-idx="13"></div>
+            <div class="board-cell" data-idx="14"></div>
+            <div class="board-cell" data-idx="15"></div>
+
+            <!-- Glassmorphic Modal Overlay (Win / Game Over) -->
+            <div id="gridOverlay" class="grid-overlay hidden" role="dialog" aria-modal="true">
+              <div class="overlay-modal-card">
+                <div class="overlay-badge" id="overlayBadge">
+                  <i class="bx bxs-trophy" id="overlayBadgeIcon"></i>
+                </div>
+                <h2 id="overlayTitle" class="overlay-title">Game Over!</h2>
+                <p id="overlayMsg" class="overlay-msg">No more valid moves remaining on the board.</p>
+                
+                <div class="overlay-stats">
+                  <div class="overlay-stat">
+                    <span class="stat-lbl">Final Score</span>
+                    <span class="stat-num" id="modalFinalScore">0</span>
+                  </div>
+                  <div class="overlay-stat">
+                    <span class="stat-lbl">Best Score</span>
+                    <span class="stat-num" id="modalBestScore">0</span>
+                  </div>
+                </div>
+
+                <div class="overlay-actions">
+                  <button id="btnKeepGoing" class="btn-action btn-secondary hidden">
+                    <i class="bx bx-play"></i> Keep Playing
+                  </button>
+                  <button id="btnOverlayRestart" class="btn-action btn-primary">
+                    <i class="bx bx-refresh"></i> Play Again
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Mobile On-Screen D-Pad (Desktop Hidden, Mobile Visible) -->
+        <nav class="mobile-dpad" aria-label="Mobile Directional Controls">
+          <button type="button" class="dpad-btn dpad-up" data-dir="up" aria-label="Slide Up">
+            <i class="bx bx-chevron-up"></i>
+          </button>
+          <button type="button" class="dpad-btn dpad-left" data-dir="left" aria-label="Slide Left">
+            <i class="bx bx-chevron-left"></i>
+          </button>
+          <button type="button" class="dpad-btn dpad-down" data-dir="down" aria-label="Slide Down">
+            <i class="bx bx-chevron-down"></i>
+          </button>
+          <button type="button" class="dpad-btn dpad-right" data-dir="right" aria-label="Slide Right">
+            <i class="bx bx-chevron-right"></i>
+          </button>
+        </nav>
+      </div>
+
+    </section>
+
+    <!-- Footer Credit -->
+    <footer class="game-footer">
+      <span>Crafted by <a href="../../../index.html" class="footer-link">Shahzad Bangash</a></span>
+    </footer>
+
+    <!-- Audio Elements -->
+    <audio id="slide-sound" src="sounds/click.mp3" preload="auto"></audio>
+    <audio id="merge-sound" src="sounds/merge.mp3" preload="auto"></audio>
+    <audio id="game-over-sound" src="sounds/game_over.mp3" preload="auto"></audio>
+
+  </main>
+
+  <!-- Unified Theme Engine Script -->
+  <script src="../../js/theme-manager.js?v=1.1"></script>
+
+  <!-- Main Game Engine Script -->
+  <script src="script.js?v=3.5"></script>
+</body>
+
+</html>

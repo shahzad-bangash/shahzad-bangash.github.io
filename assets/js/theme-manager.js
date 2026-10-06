@@ -176,7 +176,7 @@
   function updateInternalLinks(themeId) {
     try {
       const links = document.querySelectorAll(
-        'a[href*="bubble_game"], a[href*="tictactoe"], a[href*="index.html"]'
+        'a[href*="bubble_game"], a[href*="tictactoe"], a[href*="2048"], a[href*="index.html"]'
       );
       links.forEach(link => {
         const href = link.getAttribute("href");
