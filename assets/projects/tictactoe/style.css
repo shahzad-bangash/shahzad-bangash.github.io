@@ -664,6 +664,11 @@ body {
   border: none;
 }
 
+.board-grid.thinking {
+  pointer-events: none;
+  cursor: wait;
+}
+
 .cell {
   position: relative;
   width: 100%;

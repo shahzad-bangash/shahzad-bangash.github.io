@@ -15,6 +15,7 @@
   let user = "X";
   let ai = "O";
   let currentPlayer = "X";
+  let startingPlayer = "X";
   let gameActive = false;
   let aiIsThinking = false;
   let soundMuted = false;
@@ -254,9 +255,17 @@
      3. Game Flow Control
      -------------------------------------------------------------------------- */
   window.startGame = function (symbol) {
-    user = symbol;
-    ai = symbol === "X" ? "O" : "X";
-    currentPlayer = symbol; // The chosen symbol starts first
+    if (gameMode === "ai") {
+      user = symbol;
+      ai = symbol === "X" ? "O" : "X";
+      currentPlayer = "X"; // In AI mode, X always moves first (User if X, AI if O)
+      startingPlayer = "X";
+    } else {
+      user = "X";
+      ai = "O";
+      currentPlayer = symbol; // In PvP mode, chosen symbol starts first
+      startingPlayer = symbol;
+    }
     board = Array(3).fill(null).map(() => Array(3).fill(null));
     gameActive = true;
     aiIsThinking = false;
@@ -281,7 +290,7 @@
 
   window.playAgain = function () {
     board = Array(3).fill(null).map(() => Array(3).fill(null));
-    currentPlayer = "X";
+    currentPlayer = startingPlayer;
     gameActive = true;
     aiIsThinking = false;
 
@@ -314,6 +323,11 @@
     const boardDiv = document.getElementById("board");
     if (!boardDiv) return;
     boardDiv.innerHTML = "";
+    if (aiIsThinking) {
+      boardDiv.classList.add("thinking");
+    } else {
+      boardDiv.classList.remove("thinking");
+    }
 
     for (let i = 0; i < 3; i++) {
       for (let j = 0; j < 3; j++) {
@@ -396,10 +410,10 @@
   }
 
   function getAiMove() {
-    if (difficulty === "easy") {
-      const openMoves = getAvailableMoves(board);
-      if (openMoves.length === 0) return null;
+    const openMoves = getAvailableMoves(board);
+    if (openMoves.length === 0) return null;
 
+    if (difficulty === "easy") {
       // 1. If AI can win right now, take it 70% of the time
       for (const [r, c] of openMoves) {
         board[r][c] = ai;
@@ -420,6 +434,13 @@
       return smartResult ? smartResult.move : openMoves[0];
     }
 
+    // Hard Mode:
+    // If opening move on empty board, pick an optimal corner or center opening instantly
+    if (openMoves.length === 9) {
+      const openings = [[0, 0], [0, 2], [2, 0], [2, 2], [1, 1]];
+      return openings[Math.floor(Math.random() * openings.length)];
+    }
+
     // Hard Mode: 100% Unbeatable Minimax
     const result = minimax(board, ai);
     return result ? result.move : null;
@@ -427,6 +448,8 @@
 
   function triggerAiMove() {
     aiIsThinking = true;
+    const boardDiv = document.getElementById("board");
+    if (boardDiv) boardDiv.classList.add("thinking");
     setStatus(difficulty === "easy" ? "AI is playing..." : "AI is calculating optimal move...", "thinking");
 
     setTimeout(() => {
@@ -451,6 +474,7 @@
 
         currentPlayer = user;
         aiIsThinking = false;
+        if (boardDiv) boardDiv.classList.remove("thinking");
         setStatus("Your turn (" + user + ")", "user");
       }
     }, difficulty === "easy" ? 350 : 450);
