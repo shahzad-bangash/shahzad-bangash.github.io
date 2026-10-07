@@ -362,6 +362,10 @@
   text-shadow: none !important;
 }
 
+:is([data-theme="light-blue"], [data-theme="clean-light"]) .hero-subtitle .typed-cursor {
+  color: #0284c7 !important;
+}
+
 :is([data-theme="light-blue"], [data-theme="clean-light"]) .hero-tagline {
   color: #334155 !important;
 }

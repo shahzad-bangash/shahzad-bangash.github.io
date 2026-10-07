@@ -383,6 +383,7 @@ body.home-active {
   align-items: center;
   flex-wrap: wrap;
   gap: 8px;
+  min-height: 2.2em;
 }
 
 .hero-subtitle .typing {
@@ -391,6 +392,12 @@ body.home-active {
   text-shadow: 0 0 16px rgba(56, 189, 248, 0.45);
   border-bottom: 2px solid var(--accent-cyan);
   padding-bottom: 2px;
+}
+
+.hero-subtitle .typed-cursor {
+  color: var(--accent-cyan);
+  font-weight: 400;
+  margin-left: -4px;
 }
 
 .hero-tagline {
