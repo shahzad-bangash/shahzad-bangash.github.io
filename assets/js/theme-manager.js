@@ -50,71 +50,70 @@
       id: "dark-blue",
       name: "Dark Blue",
       isDefault: true,
-      dots: ["#030712", "#38bdf8", "#6366f1"],
-      particleColors: ["56, 189, 248", "99, 102, 241"],
+      dots: ["#0f172a", "#3b82f6", "#2563eb"],
+      particleColors: ["59, 130, 246", "37, 99, 235"],
       bubbleHues: [
-        { bg: "linear-gradient(135deg, #06b6d4, #2563eb)", glow: "rgba(6, 182, 212, 0.4)" },
-        { bg: "linear-gradient(135deg, #3b82f6, #6366f1)", glow: "rgba(59, 130, 246, 0.4)" },
-        { bg: "linear-gradient(135deg, #0ea5e9, #0284c7)", glow: "rgba(14, 165, 233, 0.4)" },
-        { bg: "linear-gradient(135deg, #38bdf8, #1d4ed8)", glow: "rgba(56, 189, 248, 0.4)" }
+        { bg: "#2563eb", glow: "transparent" },
+        { bg: "#3b82f6", glow: "transparent" },
+        { bg: "#0284c7", glow: "transparent" },
+        { bg: "#1d4ed8", glow: "transparent" }
       ]
     },
     {
       id: "light-blue",
       name: "Light Blue",
       isDefault: false,
-      dots: ["#f8fafc", "#0284c7", "#3b82f6"],
-      particleColors: ["2, 132, 199", "99, 102, 241"],
+      dots: ["#f8fafc", "#2563eb", "#1d4ed8"],
+      particleColors: ["37, 99, 235", "59, 130, 246"],
       bubbleHues: [
-        { bg: "linear-gradient(135deg, #0284c7, #2563eb)", glow: "rgba(2, 132, 199, 0.4)" },
-        { bg: "linear-gradient(135deg, #059669, #0284c7)", glow: "rgba(5, 150, 105, 0.4)" },
-        { bg: "linear-gradient(135deg, #7c3aed, #2563eb)", glow: "rgba(124, 58, 237, 0.4)" },
-        { bg: "linear-gradient(135deg, #ea580c, #e11d48)", glow: "rgba(234, 88, 12, 0.4)" }
+        { bg: "#2563eb", glow: "transparent" },
+        { bg: "#0284c7", glow: "transparent" },
+        { bg: "#059669", glow: "transparent" },
+        { bg: "#d97706", glow: "transparent" }
       ]
     },
     {
       id: "green",
       name: "Green",
       isDefault: false,
-      dots: ["#020d07", "#10b981", "#a3e635"],
-      particleColors: ["16, 185, 129", "45, 212, 191"],
+      dots: ["#0d1a14", "#10b981", "#059669"],
+      particleColors: ["16, 185, 129", "5, 150, 105"],
       bubbleHues: [
-        { bg: "linear-gradient(135deg, #10b981, #059669)", glow: "rgba(16, 185, 129, 0.45)" },
-        { bg: "linear-gradient(135deg, #2dd4bf, #0d9488)", glow: "rgba(45, 212, 191, 0.45)" },
-        { bg: "linear-gradient(135deg, #84cc16, #65a30d)", glow: "rgba(132, 204, 22, 0.45)" },
-        { bg: "linear-gradient(135deg, #34d399, #059669)", glow: "rgba(52, 211, 153, 0.45)" }
+        { bg: "#10b981", glow: "transparent" },
+        { bg: "#059669", glow: "transparent" },
+        { bg: "#047857", glow: "transparent" },
+        { bg: "#065f46", glow: "transparent" }
       ]
     },
     {
       id: "purple",
       name: "Purple",
       isDefault: false,
-      dots: ["#0d0414", "#ec4899", "#a855f7"],
-      particleColors: ["236, 72, 153", "168, 85, 247"],
+      dots: ["#171120", "#a855f7", "#9333ea"],
+      particleColors: ["168, 85, 247", "147, 51, 234"],
       bubbleHues: [
-        { bg: "linear-gradient(135deg, #ec4899, #be185d)", glow: "rgba(236, 72, 153, 0.45)" },
-        { bg: "linear-gradient(135deg, #a855f7, #7e22ce)", glow: "rgba(168, 85, 247, 0.45)" },
-        { bg: "linear-gradient(135deg, #f472b6, #db2777)", glow: "rgba(244, 114, 182, 0.45)" },
-        { bg: "linear-gradient(135deg, #d946ef, #9333ea)", glow: "rgba(217, 70, 239, 0.45)" }
+        { bg: "#a855f7", glow: "transparent" },
+        { bg: "#9333ea", glow: "transparent" },
+        { bg: "#7e22ce", glow: "transparent" },
+        { bg: "#6b21a8", glow: "transparent" }
       ]
     },
     {
       id: "red",
       name: "Red",
       isDefault: false,
-      dots: ["#0d0205", "#ef4444", "#fb7185"],
-      particleColors: ["239, 68, 68", "244, 63, 94"],
+      dots: ["#1a1012", "#ef4444", "#dc2626"],
+      particleColors: ["239, 68, 68", "220, 38, 38"],
       bubbleHues: [
-        { bg: "linear-gradient(135deg, #ef4444, #b91c1c)", glow: "rgba(239, 68, 68, 0.45)" },
-        { bg: "linear-gradient(135deg, #f43f5e, #be123c)", glow: "rgba(244, 63, 94, 0.45)" },
-        { bg: "linear-gradient(135deg, #fb7185, #e11d48)", glow: "rgba(251, 113, 133, 0.45)" },
-        { bg: "linear-gradient(135deg, #dc2626, #991b1b)", glow: "rgba(220, 38, 38, 0.45)" }
+        { bg: "#ef4444", glow: "transparent" },
+        { bg: "#dc2626", glow: "transparent" },
+        { bg: "#b91c1c", glow: "transparent" },
+        { bg: "#991b1b", glow: "transparent" }
       ]
     }
   ];
 
   let currentThemeId = DEFAULT_THEME;
-  let audioCtx = null;
   let broadcastChannel = null;
 
   // Initialize BroadcastChannel for cross-tab theme communication
@@ -189,42 +188,7 @@
     } catch (e) {}
   }
 
-  /**
-   * Harmonious pentatonic micro-tone for theme switching
-   */
-  function playThemeSound() {
-    try {
-      const AudioContextClass = window.AudioContext || window.webkitAudioContext;
-      if (!AudioContextClass) return;
-      if (!audioCtx) audioCtx = new AudioContextClass();
-      if (audioCtx.state === "suspended") {
-        audioCtx.resume();
-      }
-
-      const currentIndex = THEMES.findIndex(t => t.id === currentThemeId);
-      const freqs = [523.25, 587.33, 659.25, 783.99, 880.00]; // C5, D5, E5, G5, A5
-      const freq = freqs[currentIndex >= 0 ? currentIndex : 0] || 587.33;
-
-      const osc = audioCtx.createOscillator();
-      const gain = audioCtx.createGain();
-      const now = audioCtx.currentTime;
-
-      osc.type = "sine";
-      osc.frequency.setValueAtTime(freq, now);
-      osc.frequency.exponentialRampToValueAtTime(freq * 1.25, now + 0.1);
-
-      gain.gain.setValueAtTime(0.04, now);
-      gain.gain.exponentialRampToValueAtTime(0.0001, now + 0.12);
-
-      osc.connect(gain);
-      gain.connect(audioCtx.destination);
-
-      osc.start(now);
-      osc.stop(now + 0.13);
-    } catch (e) {}
-  }
-
-  function applyTheme(themeId, playAudio = false, shouldBroadcast = true) {
+  function applyTheme(themeId, shouldBroadcast = true) {
     const config = getThemeConfig(themeId);
     currentThemeId = config.id;
 
@@ -258,11 +222,6 @@
       } catch (e) {}
     }
 
-    // Play micro-feedback audio if requested
-    if (playAudio) {
-      playThemeSound();
-    }
-
     // Dispatch global event for canvas, games, and components
     window.dispatchEvent(
       new CustomEvent("portfolio:themechange", {
@@ -278,11 +237,11 @@
    * Cycles directly to the next theme in the sequence:
    * Dark Blue -> Light Blue -> Green -> Purple -> Red -> Dark Blue
    */
-  function cycleToNextTheme(playAudio = true) {
+  function cycleToNextTheme() {
     const currentIndex = THEMES.findIndex(t => t.id === currentThemeId);
     const nextIndex = (currentIndex + 1) % THEMES.length;
     const nextTheme = THEMES[nextIndex];
-    applyTheme(nextTheme.id, playAudio, true);
+    applyTheme(nextTheme.id, true);
   }
 
   function updateAllUI() {
@@ -353,11 +312,14 @@
       e.preventDefault();
       e.stopPropagation();
 
+      // Immediately release focus so no browser outline/border persists
+      trigger.blur();
+
       // Micro-animation click feedback
       trigger.classList.add("theme-switching");
       setTimeout(() => trigger.classList.remove("theme-switching"), 350);
 
-      cycleToNextTheme(true);
+      cycleToNextTheme();
     });
   }
 
@@ -368,7 +330,7 @@
     try {
       const saved = normalizeThemeId(localStorage.getItem(STORAGE_KEY));
       if (saved && saved !== currentThemeId && THEMES.some(t => t.id === saved)) {
-        applyTheme(saved, false, false);
+        applyTheme(saved, false);
       }
     } catch (e) {}
   }
@@ -378,7 +340,7 @@
     if (e.key === STORAGE_KEY && e.newValue) {
       const normalized = normalizeThemeId(e.newValue);
       if (normalized && normalized !== currentThemeId) {
-        applyTheme(normalized, false, false);
+        applyTheme(normalized, false);
       }
     }
   });
@@ -395,7 +357,7 @@
   // Initialization
   function init() {
     const saved = getSavedTheme();
-    applyTheme(saved, false, false);
+    applyTheme(saved, false);
 
     // Setup all theme switcher wrappers in DOM
     document.querySelectorAll(".theme-switcher-wrapper").forEach(setupThemeSwitcher);
@@ -413,8 +375,8 @@
     defaultTheme: DEFAULT_THEME,
     getCurrentTheme: () => currentThemeId,
     getCurrentThemeConfig: () => getThemeConfig(currentThemeId),
-    setTheme: (id, playSound = true) => applyTheme(id, playSound, true),
-    cycleTheme: () => cycleToNextTheme(true),
+    setTheme: (id) => applyTheme(id, true),
+    cycleTheme: () => cycleToNextTheme(),
     setupSwitcher: setupThemeSwitcher
   };
 

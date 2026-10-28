@@ -30,9 +30,9 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 
   <!-- Cache-busted Stylesheet -->
-  <link rel="stylesheet" href="style.css?v=3.2">
+  <link rel="stylesheet" href="style.css?v=6.6">
   <!-- Unified Theme Engine Stylesheet -->
-  <link rel="stylesheet" href="../../css/themes.css?v=1.4">
+  <link rel="stylesheet" href="../../css/themes.css?v=2.7">
 
   <!-- Instant Theme Attribute Setup (Avoid FOUT) -->
   <script>
@@ -54,26 +54,20 @@
 
 <body>
 
-  <!-- Ambient Dynamic Background Canvas -->
-  <canvas id="bg-canvas" aria-hidden="true"></canvas>
-
-  <!-- Ambient Glow Orbs -->
-  <div class="bg-glow-orb bg-glow-orb-1" aria-hidden="true"></div>
-  <div class="bg-glow-orb bg-glow-orb-2" aria-hidden="true"></div>
-  <div class="bg-glow-orb bg-glow-orb-3" aria-hidden="true"></div>
-
   <!-- Main Game Container -->
   <main id="wrapper">
 
-    <!-- Top Navigation / Back to Portfolio -->
+    <!-- Top Navigation / Back to My Works -->
     <header class="game-header">
-      <a href="../../../index.html#projects" class="back-link" id="backToPortfolio" aria-label="Back to Portfolio">
+      <a href="../../../index.html#projects" class="back-link" id="backToPortfolio" aria-label="Back to My Works">
         <i class="bx bx-arrow-back"></i>
-        <span>Portfolio</span>
+        <span>My Works</span>
       </a>
-      <div class="difficulty-badge" id="difficultyBadge">
-        <span class="pulse-dot"></span>
-        <span id="badgeDifficultyText">Minimax &bull; Hard</span>
+      <div class="header-center-group">
+        <div class="difficulty-badge" id="difficultyBadge">
+          <span class="pulse-dot"></span>
+          <span id="badgeDifficultyText">Minimax &bull; Hard</span>
+        </div>
       </div>
       <div class="header-actions">
         <div class="theme-switcher-wrapper" data-align="right">
@@ -87,101 +81,126 @@
       </div>
     </header>
 
-    <!-- Glassmorphic Card -->
+    <!-- Game Card (Sidebar + Playfield Container) -->
     <section class="game-card">
 
-      <div class="title-area">
-        <h1 class="game-title">Tic-Tac-Toe</h1>
-        <p class="game-subtitle" id="gameSubtitle">Recursive Minimax Decision Tree Engine</p>
-      </div>
+      <!-- Left Control & Status Sidebar -->
+      <aside class="game-sidebar" id="gameSidebar" aria-label="Game Status and Controls">
 
-      <!-- Persistent Scoreboard Strip with Reset Action -->
-      <div class="score-strip">
-        <div class="score-item">
-          <span class="score-label" id="score-label-1">Player X</span>
-          <span class="score-val" id="score-player">0</span>
+        <div class="sidebar-header">
+          <h1 class="game-title">Tic-Tac-Toe</h1>
+          <span class="game-subtitle" id="gameSubtitle">Minimax AI Engine</span>
         </div>
-        <div class="score-divider"></div>
-        <div class="score-item">
-          <span class="score-label">Ties</span>
-          <span class="score-val" id="score-ties">0</span>
-        </div>
-        <div class="score-divider"></div>
-        <div class="score-item">
-          <span class="score-label" id="score-label-2">AI (O)</span>
-          <span class="score-val" id="score-ai">0</span>
-        </div>
-        <div class="score-divider"></div>
-        <button class="score-reset-btn" id="scoreResetBtn" onclick="resetScores()" title="Reset all scores">
-          <i class="bx bx-reset"></i>
-          <span>Reset</span>
-        </button>
-      </div>
 
-      <!-- Mode / Role Selection Menu -->
-      <div id="menu" class="mode-selection">
+        <div class="sidebar-main-content">
 
-        <!-- Game Mode Selector (vs AI vs 2 Players) -->
-        <div class="mode-control">
-          <span class="control-label">Game Mode:</span>
-          <div class="mode-btn-group" role="tablist">
-            <button class="mode-toggle-btn active" id="modeAiBtn" onclick="setGameMode('ai')">
-              <i class="bx bx-bot"></i> vs AI
-            </button>
-            <button class="mode-toggle-btn" id="modePvpBtn" onclick="setGameMode('pvp')">
-              <i class="bx bx-group"></i> 2 Players
+          <!-- Scoreboard Card -->
+          <div class="sidebar-card score-card">
+            <div class="score-card-header">
+              <span class="card-section-title"><i class="bx bx-trophy"></i> Scoreboard</span>
+              <button class="score-reset-btn" id="scoreResetBtn" onclick="resetScores()" title="Reset all scores">
+                <i class="bx bx-reset"></i>
+                <span>Reset</span>
+              </button>
+            </div>
+            <div class="sidebar-stats-grid">
+              <div class="sidebar-stat-box score-box">
+                <span class="stat-label" id="score-label-1">Player</span>
+                <span class="stat-val score-val" id="score-player">0</span>
+              </div>
+              <div class="sidebar-stat-box ties-box">
+                <span class="stat-label">Ties</span>
+                <span class="stat-val score-val" id="score-ties">0</span>
+              </div>
+              <div class="sidebar-stat-box ai-box">
+                <span class="stat-label" id="score-label-2">AI</span>
+                <span class="stat-val score-val" id="score-ai">0</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Mode & Difficulty Settings -->
+          <div class="sidebar-card mode-card" id="menu">
+            <!-- Game Mode Selector -->
+            <div class="mode-control">
+              <span class="control-label">Game Mode</span>
+              <div class="mode-btn-group" role="tablist">
+                <button class="mode-toggle-btn active" id="modeAiBtn" onclick="setGameMode('ai')">
+                  <i class="bx bx-bot"></i> vs AI
+                </button>
+                <button class="mode-toggle-btn" id="modePvpBtn" onclick="setGameMode('pvp')">
+                  <i class="bx bx-group"></i> 2 Players
+                </button>
+              </div>
+            </div>
+
+            <!-- Difficulty Selector Tabs (Visible in AI Mode) -->
+            <div class="difficulty-control" id="difficultySection">
+              <span class="control-label">AI Difficulty</span>
+              <div class="diff-btn-group" role="tablist">
+                <button class="diff-btn" id="diffEasyBtn" onclick="setDifficulty('easy')">
+                  <i class="bx bx-smile"></i> Easy
+                </button>
+                <button class="diff-btn active" id="diffHardBtn" onclick="setDifficulty('hard')" title="Unbeatable Minimax AI">
+                  <i class="bx bx-brain"></i> Hard
+                </button>
+              </div>
+            </div>
+
+            <!-- Choose Side Selector -->
+            <div class="side-control">
+              <span class="control-label" id="selectLabel">Choose Side:</span>
+              <div class="symbol-selector" id="symbolSelector">
+                <button class="symbol-btn x-btn active" id="chooseX" onclick="startGame('X')" title="Play as X (First)">
+                  <span class="symbol-letter">X</span>
+                  <span class="symbol-desc" id="descX">You First <i class="bx bx-user"></i></span>
+                </button>
+                <button class="symbol-btn o-btn" id="chooseO" onclick="startGame('O')" title="Play as O (AI First)">
+                  <span class="symbol-letter">O</span>
+                  <span class="symbol-desc" id="descO">AI First <i class="bx bx-chip"></i></span>
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Sidebar Actions Toolbar -->
+          <div class="sidebar-actions-grid">
+            <button id="sidebarRestartBtn" class="btn-action btn-primary" onclick="playAgain()" title="Start a fresh game round">
+              <i class="bx bx-refresh"></i>
+              <span>New Round</span>
             </button>
           </div>
+
         </div>
 
-        <!-- Difficulty Selector Tabs (Visible in AI Mode) -->
-        <div class="difficulty-control" id="difficultySection">
-          <span class="control-label">AI Difficulty:</span>
-          <div class="diff-btn-group" role="tablist">
-            <button class="diff-btn" id="diffEasyBtn" onclick="setDifficulty('easy')">
-              <i class="bx bx-smile"></i> Easy
-            </button>
-            <button class="diff-btn active" id="diffHardBtn" onclick="setDifficulty('hard')">
-              <i class="bx bx-brain"></i> Hard (Minimax)
-            </button>
-          </div>
-        </div>
+      </aside>
 
-        <p class="select-label" id="selectLabel">Choose your side to begin:</p>
-        <div class="symbol-selector" id="symbolSelector">
-          <button class="symbol-btn x-btn" id="chooseX" onclick="startGame('X')">
-            <span class="symbol-letter">X</span>
-            <span class="symbol-desc" id="descX">You First <i class="bx bx-user"></i></span>
-          </button>
-          <button class="symbol-btn o-btn" id="chooseO" onclick="startGame('O')">
-            <span class="symbol-letter">O</span>
-            <span class="symbol-desc" id="descO">AI First <i class="bx bx-chip"></i></span>
-          </button>
-        </div>
-      </div>
+      <!-- Right Playfield Container -->
+      <div class="playfield-container" id="game">
 
-      <!-- Game Active Screen -->
-      <div id="game" style="display: none;">
-        <!-- Status Bar -->
+        <!-- Turn / Status Indicator Banner -->
         <div class="status-container">
           <div id="status" class="status-bar" aria-live="polite">
             <i class="bx bx-loader-alt spinner" id="thinking-spinner" style="display: none;"></i>
-            <span id="status-text">Your turn</span>
+            <span id="status-text">Your turn (X)</span>
           </div>
         </div>
 
-        <!-- Tic Tac Toe Grid -->
-        <div id="board" class="board-grid" role="grid" aria-label="Tic Tac Toe Board"></div>
+        <!-- 3x3 Board Wrapper -->
+        <div class="board-wrapper">
+          <div id="board" class="board-grid" role="grid" aria-label="Tic Tac Toe Board"></div>
+        </div>
 
         <!-- Action Controls -->
-        <div class="game-controls">
+        <div class="game-controls" id="gameControls">
           <button id="play-again" class="btn-action btn-primary" onclick="playAgain()">
             <i class="bx bx-redo"></i> Play Again
           </button>
-          <button id="home-button" class="btn-action btn-secondary" onclick="goHome()">
-            <i class="bx bx-cog"></i> Change Side
+          <button id="home-button" class="btn-action btn-secondary" onclick="playAgain()">
+            <i class="bx bx-refresh"></i> Restart Board
           </button>
         </div>
+
       </div>
 
     </section>
@@ -199,10 +218,10 @@
   </main>
 
   <!-- Theme Manager Engine -->
-  <script src="../../js/theme-manager.js?v=1.1"></script>
+  <script src="../../js/theme-manager.js?v=2.6"></script>
 
   <!-- Cache-busted Script -->
-  <script src="script.js?v=3.2"></script>
+  <script src="script.js?v=6.3"></script>
 </body>
 
 </html>

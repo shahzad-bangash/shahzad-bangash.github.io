@@ -282,16 +282,16 @@
   });
 
   /* --------------------------------------------------------------------------
-     4. Modern Curated Color Palettes (Theme-driven HSL Gradients)
+     4. Modern Curated Color Palettes (Theme-driven Solid Colors)
      -------------------------------------------------------------------------- */
   const defaultBubbleHues = [
-    { bg: "linear-gradient(135deg, #06b6d4, #2563eb)", glow: "rgba(6, 182, 212, 0.4)" },
-    { bg: "linear-gradient(135deg, #3b82f6, #6366f1)", glow: "rgba(59, 130, 246, 0.4)" },
-    { bg: "linear-gradient(135deg, #8b5cf6, #d946ef)", glow: "rgba(139, 92, 246, 0.4)" },
-    { bg: "linear-gradient(135deg, #ec4899, #f43f5e)", glow: "rgba(236, 72, 153, 0.4)" },
-    { bg: "linear-gradient(135deg, #10b981, #059669)", glow: "rgba(16, 185, 129, 0.4)" },
-    { bg: "linear-gradient(135deg, #f59e0b, #ea580c)", glow: "rgba(245, 158, 11, 0.4)" },
-    { bg: "linear-gradient(135deg, #14b8a6, #0284c7)", glow: "rgba(20, 184, 166, 0.4)" }
+    { bg: "#2563eb", glow: "transparent" },
+    { bg: "#3b82f6", glow: "transparent" },
+    { bg: "#4f46e5", glow: "transparent" },
+    { bg: "#0284c7", glow: "transparent" },
+    { bg: "#059669", glow: "transparent" },
+    { bg: "#d97706", glow: "transparent" },
+    { bg: "#dc2626", glow: "transparent" }
   ];
 
   let activeThemeBubbleHues = (window.PortfolioTheme && window.PortfolioTheme.getCurrentThemeConfig().bubbleHues)
@@ -320,30 +320,48 @@
      5. Game Logic & Generation
      -------------------------------------------------------------------------- */
   function calculateBubbleCount() {
-    if (bubbleGridElem && bubbleGridElem.clientWidth > 100 && bubbleGridElem.clientHeight > 100) {
-      const bubbleStep = window.innerWidth <= 640 ? 48 : (window.innerWidth <= 980 ? 56 : 62);
-      const cols = Math.floor((bubbleGridElem.clientWidth - 20) / bubbleStep);
-      const rows = Math.floor((bubbleGridElem.clientHeight - 20) / bubbleStep);
-      const total = cols * rows;
-      if (total >= 40) {
-        return Math.min(220, Math.max(70, total));
+    if (bubbleGridElem && bubbleGridElem.clientWidth > 80 && bubbleGridElem.clientHeight > 80) {
+      const style = window.getComputedStyle(bubbleGridElem);
+      const paddingX = (parseFloat(style.paddingLeft) || 6) + (parseFloat(style.paddingRight) || 6);
+      const paddingY = (parseFloat(style.paddingTop) || 6) + (parseFloat(style.paddingBottom) || 6);
+      const gap = parseFloat(style.gap) || 6;
+
+      let bubbleSize = 48;
+      if (window.innerWidth <= 380) {
+        bubbleSize = 32;
+      } else if (window.innerWidth <= 480) {
+        bubbleSize = 34;
+      } else if (window.innerWidth <= 768) {
+        bubbleSize = 36;
+      } else if (window.innerWidth <= 980) {
+        bubbleSize = 44;
+      }
+
+      const availW = bubbleGridElem.clientWidth - paddingX;
+      const availH = bubbleGridElem.clientHeight - paddingY;
+
+      const cols = Math.floor((availW + gap) / (bubbleSize + gap));
+      const rows = Math.floor((availH + gap) / (bubbleSize + gap));
+
+      if (cols > 0 && rows > 0) {
+        return Math.min(300, Math.max(24, cols * rows));
       }
     }
     const width = window.innerWidth;
-    if (width < 480) return 80;
-    if (width < 768) return 108;
-    if (width < 1100) return 150;
-    return 180;
+    if (width < 480) return 96;
+    if (width < 768) return 120;
+    if (width < 1100) return 160;
+    return 200;
   }
 
   function makeBubbles() {
     currentPaletteIndex = (currentPaletteIndex + 1) % modernBubbleHues.length;
     const currentTheme = modernBubbleHues[currentPaletteIndex];
 
-    // Synchronize the hit target bubble with the EXACT same color gradient and glow as playfield bubbles
+    // Synchronize the hit target bubble with the EXACT same color as playfield bubbles
     if (hitValElem) {
       hitValElem.style.background = currentTheme.bg;
-      hitValElem.style.boxShadow = `0 4px 14px rgba(0, 0, 0, 0.4), 0 0 20px ${currentTheme.glow}, inset 0 -3px 6px rgba(0, 0, 0, 0.35), inset 0 3px 6px rgba(255, 255, 255, 0.4)`;
+      hitValElem.style.boxShadow = `0 4px 10px rgba(0, 0, 0, 0.25)`;
     }
 
     const count = calculateBubbleCount();
@@ -363,7 +381,7 @@
       } else {
         num = Math.ceil(Math.random() * 10);
       }
-      fragment += `<div class="bubble" data-value="${num}" style="background: ${currentTheme.bg}; box-shadow: 0 4px 10px rgba(0, 0, 0, 0.35), 0 0 10px ${currentTheme.glow}, inset 0 -3px 6px rgba(0, 0, 0, 0.35), inset 0 3px 6px rgba(255, 255, 255, 0.4);">${num}</div>`;
+      fragment += `<div class="bubble" data-value="${num}" style="background: ${currentTheme.bg}; box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);">${num}</div>`;
     }
 
     bubbleGridElem.innerHTML = fragment;

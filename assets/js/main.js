@@ -212,7 +212,7 @@
 
     const header = document.getElementById("header");
     const sections = document.querySelectorAll("section");
-    const navLinks = document.querySelectorAll(".nav-menu a, .mobile-nav a");
+    const navLinks = document.querySelectorAll(".nav-menu a, .mobile-nav a, .mobile-home-btn");
 
     // Toggle header style: sticky top bar if not on hero header
     if (hash === "#header") {
@@ -245,7 +245,7 @@
       const parentLi = link.closest("li");
       const isMatch = link.getAttribute("href") === hash;
 
-      if (link.classList.contains("mobile-link")) {
+      if (link.classList.contains("mobile-link") || link.classList.contains("mobile-home-btn")) {
         link.classList.toggle("active", isMatch);
       } else if (parentLi) {
         parentLi.classList.toggle("active", isMatch);
@@ -406,12 +406,43 @@
   }
 
   /* ==========================================================================
-     8. Initialize All Components on DOM Ready
+     8. Interactive Skills Wheel Dropdowns Synchronization
+     ========================================================================== */
+  function initSkillsWheel() {
+    const heroWheel = document.getElementById("hero-skills-wheel");
+    const showcaseWheel = document.getElementById("showcase-skills-wheel");
+
+    function syncValue(val, source) {
+      if (!val) return;
+      if (heroWheel && source !== heroWheel && heroWheel.value !== val) {
+        heroWheel.value = val;
+      }
+      if (showcaseWheel && source !== showcaseWheel && showcaseWheel.value !== val) {
+        showcaseWheel.value = val;
+      }
+    }
+
+    if (heroWheel) {
+      heroWheel.addEventListener("change", function (e) {
+        syncValue(e.detail.value, heroWheel);
+      });
+    }
+
+    if (showcaseWheel) {
+      showcaseWheel.addEventListener("change", function (e) {
+        syncValue(e.detail.value, showcaseWheel);
+      });
+    }
+  }
+
+  /* ==========================================================================
+     9. Initialize All Components on DOM Ready
      ========================================================================== */
   document.addEventListener("DOMContentLoaded", function () {
     initParticleCanvas();
     initProjectFilters();
     initCopyEmail();
+    initSkillsWheel();
     navigateToSection(window.location.hash || "#header");
   });
 

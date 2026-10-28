@@ -75,24 +75,28 @@
     const descX = document.getElementById("descX");
     const descO = document.getElementById("descO");
 
+    const modeCard = document.getElementById("menu");
+
     if (mode === "pvp") {
+      if (modeCard) modeCard.classList.add("pvp-active");
       if (aiBtn) aiBtn.classList.remove("active");
       if (pvpBtn) pvpBtn.classList.add("active");
       if (diffSection) diffSection.style.display = "none";
       if (badgeText) badgeText.innerHTML = "Local &bull; 2 Players";
-      if (subtitle) subtitle.innerText = "Local Pass & Play Game";
+      if (subtitle) subtitle.innerText = "Pass & Play Mode";
       if (scoreLabel1) scoreLabel1.innerText = "Player X";
       if (scoreLabel2) scoreLabel2.innerText = "Player O";
-      if (selectLabel) selectLabel.innerText = "Choose who starts first:";
+      if (selectLabel) selectLabel.innerText = "First Turn:";
       if (descX) descX.innerHTML = 'Player X First <i class="bx bx-user"></i>';
       if (descO) descO.innerHTML = 'Player O First <i class="bx bx-user-voice"></i>';
     } else {
+      if (modeCard) modeCard.classList.remove("pvp-active");
       if (aiBtn) aiBtn.classList.add("active");
       if (pvpBtn) pvpBtn.classList.remove("active");
       if (diffSection) diffSection.style.display = "flex";
       if (scoreLabel1) scoreLabel1.innerText = "Player";
       if (scoreLabel2) scoreLabel2.innerText = "AI";
-      if (selectLabel) selectLabel.innerText = "Choose your side to begin:";
+      if (selectLabel) selectLabel.innerText = "Choose Side:";
       if (descX) descX.innerHTML = 'You First <i class="bx bx-user"></i>';
       if (descO) descO.innerHTML = 'AI First <i class="bx bx-chip"></i>';
       setDifficulty(difficulty);
@@ -117,12 +121,12 @@
         easyBtn.classList.add("active");
         hardBtn.classList.remove("active");
         if (badgeText) badgeText.innerHTML = "Casual &bull; Easy";
-        if (subtitle) subtitle.innerText = "Casual AI with Occasional Mistakes";
+        if (subtitle) subtitle.innerText = "Casual AI Engine";
       } else {
         hardBtn.classList.add("active");
         easyBtn.classList.remove("active");
         if (badgeText) badgeText.innerHTML = "Minimax &bull; Hard";
-        if (subtitle) subtitle.innerText = "Recursive Minimax Decision Tree Engine";
+        if (subtitle) subtitle.innerText = "Minimax AI Engine";
       }
     }
   };
@@ -270,9 +274,21 @@
     gameActive = true;
     aiIsThinking = false;
 
-    document.getElementById("menu").style.display = "none";
-    document.getElementById("game").style.display = "block";
-    document.getElementById("play-again").style.display = "none";
+    // Highlight active symbol button in sidebar
+    const btnX = document.getElementById("chooseX");
+    const btnO = document.getElementById("chooseO");
+    if (btnX && btnO) {
+      if (symbol === "X") {
+        btnX.classList.add("active");
+        btnO.classList.remove("active");
+      } else {
+        btnO.classList.add("active");
+        btnX.classList.remove("active");
+      }
+    }
+
+    const playAgainBtn = document.getElementById("play-again");
+    if (playAgainBtn) playAgainBtn.style.display = "none";
 
     drawBoard();
 
@@ -294,7 +310,8 @@
     gameActive = true;
     aiIsThinking = false;
 
-    document.getElementById("play-again").style.display = "none";
+    const playAgainBtn = document.getElementById("play-again");
+    if (playAgainBtn) playAgainBtn.style.display = "none";
     drawBoard();
 
     if (gameMode === "ai") {
@@ -309,11 +326,7 @@
   };
 
   window.goHome = function () {
-    gameActive = false;
-    aiIsThinking = false;
-    document.getElementById("menu").style.display = "block";
-    document.getElementById("game").style.display = "none";
-    updateScoreDisplay();
+    playAgain();
   };
 
   /* --------------------------------------------------------------------------
@@ -450,7 +463,7 @@
     aiIsThinking = true;
     const boardDiv = document.getElementById("board");
     if (boardDiv) boardDiv.classList.add("thinking");
-    setStatus(difficulty === "easy" ? "AI is playing..." : "AI is calculating optimal move...", "thinking");
+    setStatus("AI is thinking...", "thinking");
 
     setTimeout(() => {
       if (!gameActive) return;
@@ -743,6 +756,7 @@
     updateSoundUI();
     setGameMode(gameMode);
     setDifficulty(difficulty);
+    startGame("X");
   });
 
 })();
