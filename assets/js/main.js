@@ -406,7 +406,7 @@
   }
 
   /* ==========================================================================
-     8. Interactive Skills Wheel Dropdowns Synchronization
+     8. Interactive Skills Wheel Dropdowns Synchronization & Overlay
      ========================================================================== */
   function initSkillsWheel() {
     const heroWheel = document.getElementById("hero-skills-wheel");
@@ -419,6 +419,9 @@
       }
       if (showcaseWheel && source !== showcaseWheel && showcaseWheel.value !== val) {
         showcaseWheel.value = val;
+      }
+      if (window._updateSkillsOverlayActive) {
+        window._updateSkillsOverlayActive(val);
       }
     }
 
@@ -436,6 +439,109 @@
   }
 
   /* ==========================================================================
+     8b. Skills Card Overlay Component (Shows All Skills Names Directly on Card)
+     ========================================================================== */
+  function initSkillsOverlay() {
+    const card = document.getElementById("skillsetCard") || document.querySelector(".skillset-card");
+    const toggleBtn = document.getElementById("skillsetFullscreenBtn");
+    const toggleIcon = document.getElementById("skillsetFullscreenIcon");
+    const overlay = document.getElementById("skillsetCardOverlay");
+    const namesContainer = document.getElementById("skillsetOverlayNames");
+    const showcaseWheel = document.getElementById("showcase-skills-wheel");
+    const heroWheel = document.getElementById("hero-skills-wheel");
+
+    if (!card || !toggleBtn || !overlay || !namesContainer || !showcaseWheel) return;
+
+    function getSkillNames() {
+      if (showcaseWheel && showcaseWheel.options && showcaseWheel.options.length) {
+        return showcaseWheel.options;
+      }
+      return [
+        "Python", "TensorFlow & Keras", "FastAPI | Flask", "Reactjs",
+        "OpenCV", "FPGA Programming", "Verilog / HDL", "ESP32 & MCUs",
+        "Edge Inference", "C / C++", "JavaScript ES6", "REST APIs", "Git & GitHub"
+      ];
+    }
+
+    function renderSkillNames() {
+      const skills = getSkillNames();
+      const current = showcaseWheel ? showcaseWheel.value : skills[0];
+
+      namesContainer.innerHTML = "";
+      skills.forEach(skill => {
+        const item = document.createElement("button");
+        item.type = "button";
+        item.className = "skill-name-item" + (skill === current ? " is-active" : "");
+        item.dataset.skill = skill;
+        item.textContent = skill;
+
+        item.addEventListener("click", function () {
+          if (showcaseWheel) showcaseWheel.value = skill;
+          if (heroWheel) heroWheel.value = skill;
+          closeOverlay();
+        });
+
+        namesContainer.appendChild(item);
+      });
+    }
+
+    function updateActiveSkillName(val) {
+      if (!namesContainer) return;
+      const items = namesContainer.querySelectorAll(".skill-name-item");
+      items.forEach(item => {
+        item.classList.toggle("is-active", item.dataset.skill === val);
+      });
+    }
+
+    window._updateSkillsOverlayActive = updateActiveSkillName;
+
+    function openOverlay() {
+      renderSkillNames();
+      card.classList.add("is-expanded");
+      overlay.setAttribute("aria-hidden", "false");
+      if (toggleIcon) {
+        toggleIcon.className = "bx bx-exit-fullscreen";
+      }
+      toggleBtn.setAttribute("aria-label", "Close all skills overlay");
+      toggleBtn.setAttribute("title", "Close overlay");
+
+      // Stop wheel auto-scrolling ONLY while expanded to show all skills
+      showcaseWheel.setAttribute("expanded", "");
+      if (heroWheel) heroWheel.setAttribute("expanded", "");
+    }
+
+    function closeOverlay() {
+      card.classList.remove("is-expanded");
+      overlay.setAttribute("aria-hidden", "true");
+      if (toggleIcon) {
+        toggleIcon.className = "bx bx-fullscreen";
+      }
+      toggleBtn.setAttribute("aria-label", "Show all skills");
+      toggleBtn.setAttribute("title", "Show all skills");
+
+      // Resume auto-scroll immediately on close
+      showcaseWheel.removeAttribute("expanded");
+      if (heroWheel) heroWheel.removeAttribute("expanded");
+    }
+
+    function toggleOverlay() {
+      if (card.classList.contains("is-expanded")) {
+        closeOverlay();
+      } else {
+        openOverlay();
+      }
+    }
+
+    toggleBtn.addEventListener("click", toggleOverlay);
+
+    document.addEventListener("keydown", function (e) {
+      if (e.key === "Escape" && card.classList.contains("is-expanded")) {
+        closeOverlay();
+      }
+    });
+  }
+
+  /* ==========================================================================
      9. Initialize All Components on DOM Ready
      ========================================================================== */
   document.addEventListener("DOMContentLoaded", function () {
@@ -443,6 +549,7 @@
     initProjectFilters();
     initCopyEmail();
     initSkillsWheel();
+    initSkillsOverlay();
     navigateToSection(window.location.hash || "#header");
   });
 

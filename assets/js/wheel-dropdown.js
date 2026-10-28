@@ -524,7 +524,8 @@ class WheelDropdown extends HTMLElement {
       "scroll-duration",
       "hide-inactive",
       "dynamic-width",
-      "scale-active"
+      "scale-active",
+      "expanded"
     ];
   }
 
@@ -652,6 +653,17 @@ class WheelDropdown extends HTMLElement {
       return;
     }
 
+    if (name === "expanded") {
+      if (this.expanded) {
+        this._pauseAutoScroll();
+      } else {
+        this._isPaused = false;
+        this._isUserInteracting = false;
+        this._startAutoScroll();
+      }
+      return;
+    }
+
     if (name === "auto-scroll" || name === "scroll-interval") {
       this._startAutoScroll();
       return;
@@ -686,6 +698,8 @@ class WheelDropdown extends HTMLElement {
     const strVal = String(val);
     const index = opts.indexOf(strVal);
     if (index >= 0) {
+      this._writeValue(strVal);
+      this._updateDynamicWidth(strVal);
       this._snapTo(index, 400, false, true);
       this._setTriggerValue(strVal, true);
     } else {
@@ -754,13 +768,28 @@ class WheelDropdown extends HTMLElement {
     this._render3D();
   }
 
+  get expanded() {
+    return this.hasAttribute("expanded") && this.getAttribute("expanded") !== "false";
+  }
+
+  set expanded(val) {
+    this.toggleAttribute("expanded", Boolean(val));
+    if (val) {
+      this._pauseAutoScroll();
+    } else {
+      this._isPaused = false;
+      this._isUserInteracting = false;
+      this._startAutoScroll();
+    }
+  }
+
   _startAutoScroll() {
     this._stopAutoScroll();
     if (!this.autoScroll) return;
 
     const interval = parseFloat(this.getAttribute("scroll-interval")) || 2600;
     this._autoScrollTimer = setInterval(() => {
-      if (this._isPaused || this._isUserInteracting || this.hasAttribute("open") || this._isDragging || document.hidden || (!this.offsetParent && this.getBoundingClientRect().width === 0)) {
+      if (this.expanded || this._isPaused || (this.getAttribute("mode") === "dropdown" && this.hasAttribute("open")) || this._isDragging || document.hidden || (!this.offsetParent && this.getBoundingClientRect().width === 0)) {
         return;
       }
       this._advanceAutoScroll();
@@ -789,8 +818,10 @@ class WheelDropdown extends HTMLElement {
   _resumeAutoScroll(delay = 2000) {
     if (this._resumeTimer) clearTimeout(this._resumeTimer);
     this._resumeTimer = setTimeout(() => {
-      this._isPaused = false;
-      this._isUserInteracting = false;
+      if (!this.expanded) {
+        this._isPaused = false;
+        this._isUserInteracting = false;
+      }
     }, delay);
   }
 
@@ -811,12 +842,13 @@ class WheelDropdown extends HTMLElement {
   }
 
   _onMouseEnter() {
-    this._pauseAutoScroll();
+    // Keep auto-scroll running on hover unless expanded
   }
 
   _onMouseLeave() {
-    if (!this.hasAttribute("open") && !this._isDragging) {
-      this._resumeAutoScroll(1800);
+    if (!this.expanded && !this.hasAttribute("open") && !this._isDragging) {
+      this._isPaused = false;
+      this._isUserInteracting = false;
     }
   }
 
@@ -987,6 +1019,11 @@ class WheelDropdown extends HTMLElement {
       if (!opt) return;
       const index = Number(opt.dataset.index);
       this._snapTo(index, 240, true);
+      if (!this.expanded) {
+        this._isPaused = false;
+        this._isUserInteracting = false;
+        this._startAutoScroll();
+      }
     });
 
     this._updateDynamicWidth(this.value);
@@ -1092,8 +1129,6 @@ class WheelDropdown extends HTMLElement {
 
   _onPointerDown(e) {
     if (e.button !== 0 && e.pointerType === "mouse") return;
-    this._pauseAutoScroll();
-    this._isUserInteracting = true;
     this._cancelAnimation();
     this._isDragging = true;
     this._setScrolling(true);
@@ -1144,6 +1179,10 @@ class WheelDropdown extends HTMLElement {
   _onPointerUp(e) {
     if (!this._isDragging || e.pointerId !== this._pointerId) return;
     this._isDragging = false;
+    this._isUserInteracting = false;
+    if (!this.expanded) {
+      this._isPaused = false;
+    }
     this._stage.classList.remove("is-dragging");
     try {
       this._stage.releasePointerCapture(e.pointerId);
@@ -1154,6 +1193,9 @@ class WheelDropdown extends HTMLElement {
       if (opt) {
         const index = Number(opt.dataset.index);
         this._snapTo(index, 250, true);
+        if (!this.expanded) {
+          this._startAutoScroll();
+        }
         return;
       }
     }
@@ -1164,11 +1206,18 @@ class WheelDropdown extends HTMLElement {
   _onPointerCancel(e) {
     if (!this._isDragging || e.pointerId !== this._pointerId) return;
     this._isDragging = false;
+    this._isUserInteracting = false;
+    if (!this.expanded) {
+      this._isPaused = false;
+    }
     this._stage.classList.remove("is-dragging");
     try {
       this._stage.releasePointerCapture(e.pointerId);
     } catch (_) {}
     this._snapTo(Math.round(this._currentPos));
+    if (!this.expanded) {
+      this._startAutoScroll();
+    }
   }
 
   _startMomentum() {
@@ -1216,7 +1265,6 @@ class WheelDropdown extends HTMLElement {
 
   _onWheel(e) {
     e.preventDefault();
-    this._pauseAutoScroll();
     this._cancelAnimation();
     this._setScrolling(true);
     const rowHeight = this._rowHeight();
@@ -1236,7 +1284,11 @@ class WheelDropdown extends HTMLElement {
     clearTimeout(this._wheelSnapTimer);
     this._wheelSnapTimer = setTimeout(() => {
       this._snapTo(Math.round(this._currentPos));
-      this._resumeAutoScroll(3000);
+      if (!this.expanded) {
+        this._isPaused = false;
+        this._isUserInteracting = false;
+        this._startAutoScroll();
+      }
     }, 120);
   }
 
@@ -1356,6 +1408,11 @@ class WheelDropdown extends HTMLElement {
     this._currentPos = index;
     this._render3D();
     this._setScrolling(false);
+    this._isDragging = false;
+    this._isUserInteracting = false;
+    if (!this.expanded) {
+      this._isPaused = false;
+    }
 
     const selectedValue = options[index];
     this._choose(selectedValue, isAuto);
@@ -1421,7 +1478,11 @@ class WheelDropdown extends HTMLElement {
     const count = this.options.length;
     if (count === 0) return;
 
-    this._pauseAutoScroll();
+    if (!this.expanded) {
+      this._isPaused = false;
+      this._isUserInteracting = false;
+      this._startAutoScroll();
+    }
 
     if (e.key === "Escape" && this.hasAttribute("open")) {
       e.preventDefault();

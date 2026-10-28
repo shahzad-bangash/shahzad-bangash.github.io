@@ -29,12 +29,12 @@
   <link href="assets/vendor/boxicons/css/boxicons.min.css" rel="stylesheet">
 
   <!-- Main Custom CSS File -->
-  <link href="assets/css/style.css?v=5.7" rel="stylesheet">
+  <link href="assets/css/style.css?v=5.8" rel="stylesheet">
   <!-- Unified Theme Engine Stylesheet -->
-  <link href="assets/css/themes.css?v=3.2" rel="stylesheet">
+  <link href="assets/css/themes.css?v=3.3" rel="stylesheet">
 
   <!-- Interactive 3D Wheel Dropdown Component -->
-  <script src="assets/js/wheel-dropdown.js?v=1.9" defer></script>
+  <script src="assets/js/wheel-dropdown.js?v=2.0" defer></script>
 
   <!-- Instant Theme Attribute Setup (Avoid FOUT) -->
   <script>
@@ -571,7 +571,7 @@
       <!-- Technical Skillset Showcase Card -->
       <div class="row mt-2">
         <div class="col-12">
-          <div class="about-card skillset-card">
+          <div class="about-card skillset-card" id="skillsetCard">
             <div class="skillset-card-content">
               <div class="about-card-header mb-0">
                 <div class="about-icon-box">
@@ -598,6 +598,29 @@
                   value="Python"
                   options="Python|TensorFlow & Keras|FastAPI | Flask|Reactjs|OpenCV|FPGA Programming|Verilog / HDL|ESP32 & MCUs|Edge Inference|C / C++|JavaScript ES6|REST APIs|Git & GitHub">
                 </wheel-dropdown>
+              </div>
+            </div>
+
+            <!-- Full Screen Action Button positioned bottom right on skills card -->
+            <button
+              type="button"
+              class="skillset-fullscreen-btn"
+              id="skillsetFullscreenBtn"
+              aria-label="Show all skills overlay"
+              title="Show all skills">
+              <i class="bx bx-fullscreen" aria-hidden="true" id="skillsetFullscreenIcon"></i>
+            </button>
+
+            <!-- Overlay on skills card to write all skills names -->
+            <div class="skillset-card-overlay" id="skillsetCardOverlay" aria-hidden="true">
+              <div class="skillset-overlay-header">
+                <div class="skillset-overlay-title">
+                  <i class="bx bx-layer"></i>
+                  <span>All Skills</span>
+                </div>
+              </div>
+              <div class="skillset-overlay-names" id="skillsetOverlayNames">
+                <!-- Skill names written simply -->
               </div>
             </div>
           </div>
@@ -634,7 +657,7 @@
   <script src="assets/js/theme-manager.js?v=2.5"></script>
 
   <!-- Main Website JavaScript -->
-  <script src="assets/js/main.js?v=4.1"></script>
+  <script src="assets/js/main.js?v=4.2"></script>
 
 </body>
 

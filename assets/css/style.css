@@ -1536,8 +1536,14 @@ section.section-show {
 
 /* Technical Skillset Showcase Card */
 .skillset-card {
+  position: relative;
   padding: 24px 32px;
+  min-height: 174px;
   transition: var(--transition-smooth);
+}
+
+.skillset-card.is-expanded {
+  min-height: 235px;
 }
 
 .skillset-card-content {
@@ -1568,6 +1574,144 @@ section.section-show {
   --wheel-width: 100% !important;
   max-width: 100%;
   min-width: 0;
+}
+
+/* Fullscreen Toggle Action Button positioned bottom right on skills card */
+.skillset-fullscreen-btn {
+  position: absolute;
+  bottom: 12px;
+  right: 14px;
+  z-index: 30;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border-radius: var(--radius-sm);
+  background: var(--bg-surface);
+  border: 1px solid var(--border-medium);
+  color: var(--accent-cyan);
+  cursor: pointer;
+  outline: none;
+  box-shadow: var(--shadow-sm);
+  transition: var(--transition-fast);
+}
+
+.skillset-fullscreen-btn i {
+  font-size: 1.25rem;
+  line-height: 1;
+  transition: transform 0.2s ease;
+}
+
+.skillset-fullscreen-btn:hover {
+  background: var(--bg-card-hover);
+  border-color: var(--accent-cyan);
+  color: var(--text-white);
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-md);
+}
+
+.skillset-fullscreen-btn:hover i {
+  transform: scale(1.12);
+}
+
+.skillset-fullscreen-btn:focus-visible {
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent-cyan) 30%, transparent);
+}
+
+/* ==========================================================================
+   Overlay Directly on Skills Card Showing All Skills Names
+   ========================================================================== */
+.skillset-card-overlay {
+  position: absolute;
+  inset: 0;
+  background: var(--bg-card);
+  border-radius: var(--radius-lg);
+  z-index: 20;
+  display: flex;
+  flex-direction: column;
+  padding: 16px 24px;
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transition: opacity 0.22s ease, visibility 0.22s ease, transform 0.22s ease;
+  transform: scale(0.98);
+  overflow-y: auto;
+  scrollbar-width: thin;
+}
+
+.skillset-card.is-expanded .skillset-card-overlay {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+  transform: scale(1);
+}
+
+.skillset-overlay-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 10px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid var(--border-subtle);
+  flex-shrink: 0;
+}
+
+.skillset-overlay-title {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-family: 'Outfit', sans-serif;
+  font-weight: 700;
+  font-size: 1.05rem;
+  color: var(--text-white);
+}
+
+.skillset-overlay-title i {
+  color: var(--accent-cyan);
+  font-size: 1.3rem;
+}
+
+.skillset-overlay-names {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 8px 12px;
+  flex: 1 1 auto;
+  padding: 2px 0;
+}
+
+.skill-name-item {
+  font-family: 'Outfit', 'Inter', -apple-system, sans-serif;
+  font-size: 0.92rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  background: var(--bg-surface);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-md);
+  padding: 6px 14px;
+  cursor: pointer;
+  transition: all 0.16s ease;
+  user-select: none;
+  white-space: nowrap;
+}
+
+.skill-name-item:hover {
+  color: var(--accent-cyan);
+  border-color: var(--accent-cyan);
+  background: var(--bg-card-hover);
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-sm);
+}
+
+.skill-name-item.is-active {
+  color: var(--accent-cyan);
+  border-color: var(--accent-cyan);
+  font-weight: 700;
+  background: color-mix(in srgb, var(--accent-cyan) 12%, var(--bg-surface));
+  box-shadow: 0 0 0 1px var(--accent-cyan);
 }
 
 .skill-category-card {
@@ -1685,6 +1829,19 @@ section.section-show {
   .skillset-wheel-wrapper wheel-dropdown {
     width: 100%;
     max-width: 100%;
+  }
+
+  .skillset-card.is-expanded {
+    min-height: 200px;
+  }
+
+  .skillset-overlay-names {
+    gap: 8px 10px;
+  }
+
+  .skill-name-item {
+    font-size: 0.9rem;
+    padding: 6px 12px;
   }
 }
 
@@ -1909,6 +2066,23 @@ section.section-show {
   .skillset-wheel-wrapper wheel-dropdown {
     width: 100%;
     max-width: 100%;
+  }
+
+  .skillset-card.is-expanded {
+    min-height: 290px;
+  }
+
+  .skillset-card-overlay {
+    padding: 16px 18px;
+  }
+
+  .skillset-overlay-names {
+    gap: 8px 8px;
+  }
+
+  .skill-name-item {
+    font-size: 0.85rem;
+    padding: 6px 12px;
   }
 
   .hero-tagline {

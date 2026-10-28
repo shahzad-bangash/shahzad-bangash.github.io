@@ -1542,4 +1542,50 @@ wheel-dropdown {
   --wheel-popover-shadow: 0 16px 36px -4px rgba(0, 0, 0, 0.6), 0 0 0 1px #3d3016;
 }
 
+/* ==========================================================================
+   7. Skills Card Overlay Theme Enhancements
+   ========================================================================== */
+:is([data-theme="light-blue"], [data-theme="clean-light"]) .skillset-fullscreen-btn {
+  background: #f8fafc;
+  border-color: #cbd5e1;
+  color: #2563eb;
+}
+
+:is([data-theme="light-blue"], [data-theme="clean-light"]) .skillset-fullscreen-btn:hover {
+  background: #2563eb;
+  border-color: #2563eb;
+  color: #ffffff;
+}
+
+:is([data-theme="light-blue"], [data-theme="clean-light"]) .skillset-card-overlay {
+  background: #ffffff;
+}
+
+:is([data-theme="light-blue"], [data-theme="clean-light"]) .skillset-overlay-header {
+  border-color: #e2e8f0;
+}
+
+:is([data-theme="light-blue"], [data-theme="clean-light"]) .skillset-overlay-title {
+  color: #0f172a;
+}
+
+:is([data-theme="light-blue"], [data-theme="clean-light"]) .skill-name-item {
+  color: #0f172a;
+  background: #f8fafc;
+  border-color: #e2e8f0;
+}
+
+:is([data-theme="light-blue"], [data-theme="clean-light"]) .skill-name-item:hover {
+  color: #2563eb;
+  border-color: #2563eb;
+  background: #eff6ff;
+}
+
+:is([data-theme="light-blue"], [data-theme="clean-light"]) .skill-name-item.is-active {
+  color: #2563eb;
+  border-color: #2563eb;
+  background: #eff6ff;
+}
+
+
 
